@@ -1,1 +1,1 @@
-RDA python code template to create new and modify existing RDA python packages.
+Pipeline code to extract, assemble, and ingest NSF NCAR RDA dataset metadata into a Globus Search index.
