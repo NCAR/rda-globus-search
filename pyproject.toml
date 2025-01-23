@@ -1,17 +1,18 @@
 [build-system]
 requires = [
   "setuptools>=61.0",
-  "rda_python_common",
+  "globus_sdk",
+  "psycopg2",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "rda_python_template"
+name = "rda_globus_search"
 version = "1.0.0"
 authors = [
-  { name="Zaihua Ji", email="zji@ucar.edu" },
+  { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
-description = "RDA Python code template to create new and modify existing other RDA python packages"
+description = "Python package to extract, assemble, and ingest NSF NCAR RDA dataset metadata into a Globus Search index"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
@@ -22,8 +23,4 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/NCAR/rda-python-template"
-
-[project.scripts]
-hello_world = "rda_python_template.hello_world:main"
-
+"Homepage" = "https://github.com/NCAR/rda-globus-search"
