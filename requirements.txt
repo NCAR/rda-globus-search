@@ -1,1 +1,2 @@
-rda_python_common
+globus_sdk
+psycopg2
