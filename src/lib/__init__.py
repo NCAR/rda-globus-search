@@ -5,6 +5,7 @@ import click
 
 from .auth import auth_client, internal_auth_client, token_storage_adapter
 from .search import search_client
+from .database import get_dbconfigs, load_search_db
 
 APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:all"]
 
@@ -26,4 +27,6 @@ __all__ = (
     "internal_auth_client",
     "auth_client",
     "search_client",
+    "get_dbconfigs",
+    "load_search_db",
 )

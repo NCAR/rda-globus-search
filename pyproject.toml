@@ -3,6 +3,8 @@ requires = [
   "setuptools>=61.0",
   "globus_sdk",
   "psycopg2",
+  "pyyaml",
+  "rda_python_common",
 ]
 build-backend = "setuptools.build_meta"
 

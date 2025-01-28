@@ -7,7 +7,7 @@ import globus_sdk
 from .lib import APP_SCOPES, common_options, internal_auth_client, token_storage_adapter
 
 
-@click.group("searchable-files")
+@click.group("dataset-search")
 @common_options
 def cli():
     pass
@@ -67,8 +67,8 @@ def _revoke_current_tokens(native_client, abort_on_fail=True):
 @cli.command(
     "login",
     help=(
-        "Log in to Searchable Files. "
-        "Necessary before any 'searchable-files' commands which "
+        "Log in to Dataset Search. "
+        "Necessary before any 'dataset-search' commands which "
         "require authentication will work"
     ),
 )
@@ -115,7 +115,7 @@ You may force a new login with
     click.echo(
         """\
 
-You have successfully logged in to Searchable Files
+You have successfully logged in to Dataset Search
 """
     )
 
@@ -123,7 +123,7 @@ You have successfully logged in to Searchable Files
 @cli.command(
     "logout",
     help=(
-        "Log out of Searchable Files. "
+        "Log out of Dataset Search. "
         "Removes your Globus tokens from local storage, "
         "and revokes them so that they cannot be used anymore"
     ),
@@ -138,9 +138,6 @@ def logout():
     _revoke_current_tokens(native_client)
     click.echo(
         """\
-You are now successfully logged out of Searchable Files.
-You may also want to logout of any browser session you have with Globus:
-
-  https://auth.globus.org/v2/web/logout
+You are now successfully logged out of Dataset Search.
 """
     )
