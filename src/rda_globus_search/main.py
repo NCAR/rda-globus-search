@@ -14,7 +14,7 @@ def cli():
 
 
 # index management
-manage_index.add_commands(cli)
+#manage_index.add_commands(cli)
 
 # cli workflow
 #cli.add_command(extractor.extract_cli)
