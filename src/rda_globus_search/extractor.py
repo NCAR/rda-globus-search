@@ -31,17 +31,13 @@ def metadata2dict(dataset):
     """ Query metadata from the database and return in a comprehensive dict """
 
     search_metadata = get_search_metadata(dataset)
-    dssdb_metadata = get_dssdb_metadata(dataset)
-    wagtail_metadata = get_wagtail_metadata(dataset)
+    #dssdb_metadata = get_dssdb_metadata(dataset)
+    #wagtail_metadata = get_wagtail_metadata(dataset)
 
-    return {
-        "title": file_tags(filename),
-        "extension": extension(filename),
-        "head": read_head(filename, settings),
-        "name": os.path.basename(filename),
-        "relpath": filename,
-        **stat_dict(filename),
-    }
+    metadata = {}
+    metadata.update(search_metadata)
+
+    return metadata
 
 def target_file(output_directory, dataset):
     hashed_name = hashlib.sha256(dataset.encode("utf-8")).hexdigest()
