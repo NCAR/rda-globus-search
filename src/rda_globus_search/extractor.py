@@ -12,11 +12,13 @@ def get_search_metadata(dataset):
     """ Query and return search metadata """
     search_db = load_search_db()
     cond = "dsid='{}'".format(dataset)
-    title = pgget('datasets', 'title', cond)
+    myrec = pgget('datasets', 'title, summary', cond)
+    title = myrec['title']
+    description = myrec['summary']
     data_types = pgget('data_types', 'DISTINCT(keyword) as data_type', cond)
 
     search_metadata = {}
-    search_metadata.update(title)
+    search_metadata.update({'title': title, 'description': description})
     search_metadata.update(data_types)
 
     return search_metadata
