@@ -1,8 +1,5 @@
-import datetime
-import fnmatch
 import hashlib
 import os
-import re
 import shutil
 
 import click
@@ -10,8 +7,6 @@ import click
 from .lib import common_options, prettyprint_json
 from .lib.database import load_search_db
 from rda_python_common.PgDBI import pgget
-
-yaml = ruamel.yaml.YAML(typ="safe")
 
 def get_search_metadata(dataset):
     """ Query and return search metadata """
