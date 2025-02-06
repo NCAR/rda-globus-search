@@ -8,11 +8,11 @@ from .lib import common_options, prettyprint_json
 from .lib.database import load_search_db
 from rda_python_common.PgDBI import pgget, pgmget
 
-def get_search_metadata(dataset):
+def get_search_metadata(dsid):
     """ Query and return search metadata """
 
     load_search_db()
-    cond = "dsid='{}'".format(dataset)
+    cond = "dsid='{}'".format(dsid)
     search_metadata = {}
 
     # Dataset title and summary
@@ -27,7 +27,7 @@ def get_search_metadata(dataset):
     keyword_query = "SELECT " \
         "CONCAT('EARTH SCIENCE > ', topic, ' > ', term, ' > ', keyword) " \
         "AS keywords " \
-        "FROM gcmd_variables WHERE dsid='{}'".format(dataset)
+        "FROM gcmd_variables WHERE dsid='{}'".format(dsid)
     gcmd_keywords = pgmget(None, None, keyword_query)
     search_metadata.update({'GCMD keywords': gcmd_keywords['keywords']})
 
@@ -43,7 +43,7 @@ def get_search_metadata(dataset):
         "FROM platforms_new AS p " \
         "LEFT JOIN gcmd_platforms AS g " \
         "ON g.uuid = p.keyword " \
-        "WHERE p.dsid = '{}'".format(dataset)
+        "WHERE p.dsid = '{}'".format(dsid)
     platforms = pgmget(None, None, platform_query)
     if not platforms:
         search_metadata.update({'platform': None})
@@ -66,7 +66,7 @@ def get_search_metadata(dataset):
         "FROM projects_new AS p " \
         "LEFT JOIN gcmd_projects AS g " \
         "ON g.uuid = p.keyword " \
-        "WHERE p.dsid = '{}'".format(dataset)
+        "WHERE p.dsid = '{}'".format(dsid)
     projects = pgmget(None, None, project_query)
     if not projects:
         search_metadata.update({'project': None})
@@ -78,7 +78,7 @@ def get_search_metadata(dataset):
         "FROM supported_projects AS p " \
         "LEFT JOIN gcmd_projects AS g " \
         "ON g.uuid = p.keyword " \
-        "WHERE p.dsid = '{}'".format(dataset)
+        "WHERE p.dsid = '{}'".format(dsid)
     supported_projects = pgmget(None, None, supported_projects_query)
     if not supported_projects:
         search_metadata.update({'supports project': None})
@@ -97,7 +97,7 @@ def get_search_metadata(dataset):
         "FROM instruments AS i " \
         "LEFT JOIN gcmd_instruments AS g " \
         "ON g.uuid = i.keyword " \
-        "WHERE i.dsid = '{}'".format(dataset)
+        "WHERE i.dsid = '{}'".format(dsid)
     instruments = pgmget(None, None, instruments_query)
     if not instruments:
         search_metadata.update({'instrument': None})
@@ -109,7 +109,7 @@ def get_search_metadata(dataset):
         "FROM locations_new AS l " \
         "LEFT JOIN gcmd_locations AS g " \
         "ON g.uuid = l.keyword " \
-        "WHERE l.dsid = '{}'".format(dataset)
+        "WHERE l.dsid = '{}'".format(dsid)
     locations = pgmget(None, None, location_query)
     if not locations:
         search_metadata.update({'location': None})
@@ -121,7 +121,7 @@ def get_search_metadata(dataset):
         "FROM contributors_new AS c " \
         "LEFT JOIN gcmd_providers AS g " \
         "ON g.uuid = c.keyword " \
-        "WHERE c.dsid = '{}'".format(dataset)
+        "WHERE c.dsid = '{}'".format(dsid)
     contributors = pgmget(None, None, contributor_query)
     if not contributors:
         search_metadata.update({'data contributors': None})
@@ -130,20 +130,20 @@ def get_search_metadata(dataset):
 
     return search_metadata
 
-def metadata2dict(dataset):
+def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
 
-    search_metadata = get_search_metadata(dataset)
-    #dssdb_metadata = get_dssdb_metadata(dataset)
-    #wagtail_metadata = get_wagtail_metadata(dataset)
+    search_metadata = get_search_metadata(dsid)
+    #dssdb_metadata = get_dssdb_metadata(dsid)
+    #wagtail_metadata = get_wagtail_metadata(dsid)
 
     metadata = {}
     metadata.update(search_metadata)
 
     return metadata
 
-def target_file(output_directory, dataset):
-    hashed_name = hashlib.sha256(dataset.encode("utf-8")).hexdigest()
+def target_file(output_directory, dsid):
+    hashed_name = hashlib.sha256(dsid.encode("utf-8")).hexdigest()
     os.makedirs(output_directory, exist_ok=True)
     return os.path.join(output_directory, hashed_name) + ".json"
 
@@ -168,21 +168,21 @@ def target_file(output_directory, dataset):
     "where the extracted metadata should be written",
 )
 @click.option(
-    "--dataset",
+    "--dsid",
     type=str,
     required=True,
     help="Dataset ID (dnnnnnn) to extract metadata.",
 )
 @common_options
-def extract_cli(dataset, output, clean):
+def extract_cli(dsid, output, clean):
     if clean:
         shutil.rmtree(output, ignore_errors=True)
 
     rendered_data = {}
-    rendered_data[dataset] = metadata2dict(dataset)
+    rendered_data[dsid] = metadata2dict(dsid)
 
-    for dataset, data in rendered_data.items():
-        with open(target_file(output, dataset), "w") as fp:
+    for dsid, data in rendered_data.items():
+        with open(target_file(output, dsid), "w") as fp:
             prettyprint_json(data, fp)
 
     click.echo("metadata extraction complete")
