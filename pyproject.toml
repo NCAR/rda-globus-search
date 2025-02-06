@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rda_globus_search"
-version = "1.0.4"
+version = "1.0.5"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
