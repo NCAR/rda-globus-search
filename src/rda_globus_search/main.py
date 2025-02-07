@@ -4,6 +4,7 @@ import click
 import globus_sdk
 
 # from . import assembler, extractor, manage_index, query, submitter, watcher
+from . import extractor
 from .lib import APP_SCOPES, common_options, internal_auth_client, token_storage_adapter
 
 
@@ -17,7 +18,7 @@ def cli():
 #manage_index.add_commands(cli)
 
 # cli workflow
-#cli.add_command(extractor.extract_cli)
+cli.add_command(extractor.extract_cli)
 #cli.add_command(assembler.assemble_cli)
 #cli.add_command(submitter.submit_cli)
 #cli.add_command(watcher.watch_cli)

@@ -155,6 +155,12 @@ def target_file(output_directory, dsid):
     "This command creates dataset level metadata extracted from various metadata tables.",
 )
 @click.option(
+    "--dsid",
+    type=str,
+    required=True,
+    help="Dataset ID (dnnnnnn) to extract metadata.",
+)
+@click.option(
     "--clean",
     default=False,
     is_flag=True,
@@ -166,12 +172,6 @@ def target_file(output_directory, dsid):
     show_default=True,
     help="A path, relative to the current working directory, "
     "where the extracted metadata should be written",
-)
-@click.option(
-    "--dsid",
-    type=str,
-    required=True,
-    help="Dataset ID (dnnnnnn) to extract metadata.",
 )
 @common_options
 def extract_cli(dsid, output, clean):
