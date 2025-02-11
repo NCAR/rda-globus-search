@@ -142,7 +142,7 @@ def get_dssdb_metadata(dsid):
 
     dsperiod_query = "SELECT " \
         "MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
-        "MAX(CONCAT(date_end, ' ', time_end)) AS date_end, " \
+        "MAX(CONCAT(date_end, ' ', time_end)) AS date_end " \
         "FROM dsperiod " \
         "WHERE {}".format(cond)
     dsperiod = pgmget(None, None, dsperiod_query)
