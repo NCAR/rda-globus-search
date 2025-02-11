@@ -29,30 +29,3 @@ def load_db(database, schema=None):
         pgschema = dbconfigs['pg_schemas'][database]
 
     return default_scinfo(dbconfig['dbname'], pgschema, dbconfig['host'], dbconfig['user'])
-
-def load_search_db():
-    """ Set the database connection to the search DB """
-    
-    dbconfigs = get_dbconfigs()
-    search_dbconfig = dbconfigs['search_config']
-    pgschemas = dbconfigs['pg_schemas']
-
-    return default_scinfo(search_dbconfig['dbname'], pgschemas['search'], search_dbconfig['host'], search_dbconfig['user'])
-
-def load_dssdb_db():
-    """ Set the database connection to dssdb """
-    
-    dbconfigs = get_dbconfigs()
-    dssdb_dbconfig = dbconfigs['dssdb_config']
-    pgschemas = dbconfigs['pg_schemas']
-
-    return default_scinfo(dssdb_dbconfig['dbname'], pgschemas['dssdb'], dssdb_dbconfig['host'], dssdb_dbconfig['user'])
-
-def load_wagtail_db():
-    """ Set the database connection to wagtail """
-    
-    dbconfigs = get_dbconfigs()
-    wagtail_dbconfig = dbconfigs['wagtail_config']
-    pgschemas = dbconfigs['pg_schemas']
-
-    return default_scinfo(wagtail_dbconfig['dbname'], pgschemas['wagtail'], wagtail_dbconfig['host'], wagtail_dbconfig['user'])
