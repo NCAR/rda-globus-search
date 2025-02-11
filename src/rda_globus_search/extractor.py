@@ -8,6 +8,8 @@ from .lib import common_options, prettyprint_json
 from .lib.database import load_db, load_search_db, load_dssdb_db, load_wagtail_db
 from rda_python_common.PgDBI import pgget, pgmget
 
+EXTRACTED_METADATA_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
+
 def get_search_metadata(dsid):
     """ Query and return search metadata """
 
@@ -212,7 +214,7 @@ def target_file(output_directory, dsid):
 )
 @click.option(
     "--output",
-    default="output/extracted",
+    default=EXTRACTED_METADATA_OUTPUT,
     show_default=True,
     help="A path, relative to the current working directory, "
     "where the extracted metadata should be written",
