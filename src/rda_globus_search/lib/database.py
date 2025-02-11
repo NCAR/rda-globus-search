@@ -15,12 +15,16 @@ def get_dbconfigs():
 def load_db(database, schema=None):
     """ 
     Set the database connection to the given DB/schema.
-    'database' can be one of 'dssdb', 'search', or 'wagtail'
+
+    Valid database names: 'dssdb', 'search', or 'wagtail'.
+    Schema name will default to the database name unless
+    otherwise specified.
     """
     
     dbconfigs = get_dbconfigs()
     config_name = '{}_config'.format(database)
     dbconfig = dbconfigs[config_name]
+
     if not schema:
         pgschema = dbconfigs['pg_schemas'][database]
 
