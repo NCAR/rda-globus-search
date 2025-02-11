@@ -28,5 +28,5 @@ __all__ = (
     "auth_client",
     "search_client",
     "get_dbconfigs",
-    "load_search_db",
+    "load_db",
 )
