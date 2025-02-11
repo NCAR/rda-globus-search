@@ -5,7 +5,7 @@ import shutil
 import click
 
 from .lib import common_options, prettyprint_json
-from .lib.database import load_search_db
+from .lib.database import load_search_db, load_dssdb_db
 from rda_python_common.PgDBI import pgget, pgmget
 
 def get_search_metadata(dsid):
@@ -130,15 +130,25 @@ def get_search_metadata(dsid):
 
     return search_metadata
 
+def get_dssdb_metadata(dsid):
+    """ Query and return metadata from dssdb tables """
+
+    load_dssdb_db()
+    cond = "dsid='{}'".format(dsid)
+    dssdb_metadata = {}
+
+
 def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
 
     search_metadata = get_search_metadata(dsid)
-    #dssdb_metadata = get_dssdb_metadata(dsid)
+    dssdb_metadata = get_dssdb_metadata(dsid)
     #wagtail_metadata = get_wagtail_metadata(dsid)
 
     metadata = {}
     metadata.update(search_metadata)
+    metadata.update(dssdb_metadata)
+    #metadata.update(wagtail_metadata)
 
     return metadata
 
