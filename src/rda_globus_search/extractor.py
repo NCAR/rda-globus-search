@@ -5,7 +5,7 @@ import shutil
 import click
 
 from .lib import common_options, prettyprint_json
-from .lib.database import load_db, load_search_db, load_dssdb_db, load_wagtail_db
+from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 
 EXTRACTED_METADATA_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
