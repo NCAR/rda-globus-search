@@ -11,7 +11,7 @@ from rda_python_common.PgDBI import pgget, pgmget
 def get_search_metadata(dsid):
     """ Query and return search metadata """
 
-    load_search_db()
+    load_db('search')
     cond = "dsid='{}'".format(dsid)
     search_metadata = {}
 
@@ -133,7 +133,7 @@ def get_search_metadata(dsid):
 def get_dssdb_metadata(dsid):
     """ Query and return metadata from dssdb tables """
 
-    load_dssdb_db()
+    load_db('dssdb')
     cond = "dsid='{}'".format(dsid)
     dssdb_metadata = {}
 
@@ -154,7 +154,7 @@ def get_dssdb_metadata(dsid):
 def get_wagtail_metadata(dsid):
     """ Query and return wagtail metadata """
 
-    load_wagtail_db()
+    load_db('wagtail')
     cond = "dsid='{}'".format(dsid)
     wagtail_metadata = {}
 
