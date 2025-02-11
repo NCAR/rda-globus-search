@@ -5,7 +5,7 @@ import shutil
 import click
 
 from .lib import common_options, prettyprint_json
-from .lib.database import load_search_db, load_dssdb_db
+from .lib.database import load_db, load_search_db, load_dssdb_db, load_wagtail_db
 from rda_python_common.PgDBI import pgget, pgmget
 
 def get_search_metadata(dsid):
@@ -137,18 +137,52 @@ def get_dssdb_metadata(dsid):
     cond = "dsid='{}'".format(dsid)
     dssdb_metadata = {}
 
+    doi = pgget('dsvrsn', 'doi', cond + " AND status='A'")
+    dssdb_metadata.update({'doi': doi})
+
+    dsperiod_query = "SELECT " \
+        "MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
+        "MAX(CONCAT(date_end, ' ', time_end)) AS date_end, " \
+        "FROM dsperiod " \
+        "WHERE {}".format(cond)
+    dsperiod = pgmget(None, None, dsperiod_query)
+    dssdb_metadata.update({'temporal range start': dsperiod['date_start'],
+                           'temporal range end': dsperiod['date_end']})
+
+    return dssdb_metadata
+
+def get_wagtail_metadata(dsid):
+    """ Query and return wagtail metadata """
+
+    load_wagtail_db()
+    cond = "dsid='{}'".format(dsid)
+    wagtail_metadata = {}
+
+    wagtail_rec = pgget('dataset_description_datasetdescriptionpage', 'update_freq, variables, volume', cond)
+
+    updates = wagtail_rec['update_freq']
+    variables = wagtail_rec['variables']['gcmd']
+    total_volume = wagtail_rec['volume']['full']
+
+    wagtail_metadata.update({
+        'updates': updates,
+        'variables': variables,
+        'total volume': total_volume
+    })
+
+    return wagtail_metadata
 
 def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
 
     search_metadata = get_search_metadata(dsid)
     dssdb_metadata = get_dssdb_metadata(dsid)
-    #wagtail_metadata = get_wagtail_metadata(dsid)
+    wagtail_metadata = get_wagtail_metadata(dsid)
 
     metadata = {}
     metadata.update(search_metadata)
     metadata.update(dssdb_metadata)
-    #metadata.update(wagtail_metadata)
+    metadata.update(wagtail_metadata)
 
     return metadata
 
