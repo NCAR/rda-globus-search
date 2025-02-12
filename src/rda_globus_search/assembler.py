@@ -38,11 +38,9 @@ def flush_batch(entry_batch, docid, output_directory):
 
 @click.command(
     "assemble",
-    help="Annotate data and prepare it for ingest.\n"
+    help="Annotate data and prepare it for ingest into a Globus Search index.\n"
     "Given data from the Extractor, notate it and convert it into "
-    "Ingest format. This will pull in data from the assembler configuration "
-    "and use it to populate `visible_to` (see docs.globus.org/api/search for "
-    "details on `visible_to`) and add fields to documents.",
+    "Ingest format.",
 )
 @click.option(
     "--directory",

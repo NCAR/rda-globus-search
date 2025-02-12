@@ -230,8 +230,7 @@ def validate_dsid(ctx, param, dsid):
     "--output",
     default=EXTRACTED_OUTPUT,
     show_default=True,
-    help="A path, relative to the current working directory, "
-    "where the extracted metadata should be written",
+    help="Absolute path where the extracted metadata should be written",
 )
 @common_options
 def extract_cli(dsid, output, clean):
