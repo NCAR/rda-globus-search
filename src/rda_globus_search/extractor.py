@@ -172,17 +172,23 @@ def get_wagtail_metadata(dsid):
 
     return wagtail_metadata
 
+def get_other_metadata(dsid):
+    """ Returns metadata not stored in DB """
+
+    other_metadata = {}
+    url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
+    other_metadata.update({'url': url})
+
+    return other_metadata
+
 def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
 
-    search_metadata = get_search_metadata(dsid)
-    dssdb_metadata = get_dssdb_metadata(dsid)
-    wagtail_metadata = get_wagtail_metadata(dsid)
-
     metadata = {}
-    metadata.update(search_metadata)
-    metadata.update(dssdb_metadata)
-    metadata.update(wagtail_metadata)
+    metadata.update(get_search_metadata(dsid))
+    metadata.update(get_dssdb_metadata(dsid))
+    metadata.update(get_wagtail_metadata(dsid))
+    metadata.update(get_other_metadata(dsid))
 
     return metadata
 
