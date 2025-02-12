@@ -4,7 +4,7 @@ import shutil
 
 import click
 
-from .lib import EXTRACTED_OUTPUT, common_options, prettyprint_json
+from .lib import EXTRACTED_OUTPUT, RDA_DOMAIN, common_options, prettyprint_json
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 

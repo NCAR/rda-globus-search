@@ -14,6 +14,8 @@ APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:
 EXTRACTED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
 ASSEMBLED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/assembled'
 
+RDA_DOMAIN = "https://rda.ucar.edu"
+
 def common_options(f):
     # any shared/common options for all commands
     return click.help_option("-h", "--help")(f)
@@ -46,6 +48,7 @@ __all__ = (
     "APP_SCOPES",
     "EXTRACTED_OUTPUT",
     "ASSEMBLED_OUTPUT",
+    "RDA_DOMAIN",
     "common_options",
     "all_filenames",
     "prettyprint_json",
