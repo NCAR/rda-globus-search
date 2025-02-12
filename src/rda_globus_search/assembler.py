@@ -22,13 +22,11 @@ def build_entries(datafile):
     subject = entry_data['url']
     visibility = 'public'
 
-    return [
-        {
+    return {
             "subject": subject,
             "visible_to": visibility,
             "content": entry_data,
-        }
-    ]
+    }
 
 def flush_batch(entry_batch, docid, output_directory):
     os.makedirs(output_directory, exist_ok=True)
