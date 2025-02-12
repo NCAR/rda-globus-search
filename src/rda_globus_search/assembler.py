@@ -1,91 +1,34 @@
-import fnmatch
 import json
 import os
 import shutil
 
 import click
-import ruamel.yaml
 
 from .lib import (ASSEMBLED_OUTPUT, 
                   EXTRACTED_OUTPUT, 
                   all_filenames, 
-                  auth_client, 
                   common_options, 
                   prettyprint_json
 )
 
-yaml = ruamel.yaml.YAML(typ="safe")
+MAX_BATCH_SIZE = 10
 
-
-def _current_user_as_urn():
-    if not hasattr(_current_user_as_urn, "identity_id"):
-        _current_user_as_urn.identity_id = auth_client().oauth2_userinfo()["sub"]
-    return f"urn:globus:auth:identity:{_current_user_as_urn.identity_id}"
-
-
-def _render_visibility(value, listify=True):
-    if isinstance(value, list):
-        return [_render_visibility(v, listify=False) for v in value]
-
-    ret = value
-    if value == "{current_user}":
-        ret = _current_user_as_urn()
-
-    if isinstance(ret, list):
-        return ret
-    return [ret]
-
-
-def _add_annotations(data, annotations):
-    for k, v in annotations.items():
-        if k not in data:
-            data[k] = v
-        else:
-            if not isinstance(data[k], list):
-                data[k] = [data[k]]
-            data[k].append(v)
-
-
-def build_entries(datafile, settings):
+def build_entries(datafile):
     # read data
     with open(datafile) as fp:
         data = json.load(fp)
 
-    full_filename = data["relpath"]
-
-    # if there are annotations to add, do so
-    for pattern, annotations in settings.file_specific_annotations.items():
-        if fnmatch.fnmatch(full_filename, pattern):
-            _add_annotations(data, annotations)
-
-    non_default_entries, non_default_fields = [], []
-    for part in settings.doc_parts:
-        non_default_entries.append(
-            (part["visibility"], {f: data[f] for f in part["fields"]}, part["id"])
-        )
-        non_default_fields.extend(part["fields"])
-    default_entry_data = {k: v for k, v in data.items() if k not in non_default_fields}
-
-    default_visibility = settings.default_visibility
-    if full_filename in settings.file_restrictions:
-        default_visibility = settings.file_restrictions[full_filename]
+    entry_data = {k: v for k, v in data.items()}
+    subject = entry_data['url']
+    visibility = 'public'
 
     return [
         {
-            "subject": full_filename,
-            "visible_to": _render_visibility(default_visibility),
-            "content": default_entry_data,
+            "subject": subject,
+            "visible_to": visibility,
+            "content": entry_data,
         }
-    ] + [
-        {
-            "subject": full_filename,
-            "visible_to": _render_visibility(vis),
-            "content": fields,
-            "id": eid,
-        }
-        for vis, fields, eid in non_default_entries
     ]
-
 
 def flush_batch(entry_batch, docid, output_directory):
     os.makedirs(output_directory, exist_ok=True)
@@ -94,24 +37,6 @@ def flush_batch(entry_batch, docid, output_directory):
         prettyprint_json(
             {"ingest_type": "GMetaList", "ingest_data": {"gmeta": entry_batch}}, fp
         )
-
-
-class Settings:
-    def __init__(self, data):
-        self.max_batch_size = data.get("max_batch_size", 100)
-        self.file_specific_annotations = data.get("file_specific_annotations", {})
-
-        self.visibility = data.get("visibility")
-        self.default_visibility = self.visibility.get("default_visibility", "public")
-        self.file_restrictions = self.visibility.get("file_restrictions", {})
-        self.doc_parts = self.visibility.get("doc_parts", [])
-
-
-def _load_settings_callback(ctx, param, value):
-    if value is not None:
-        with open(value) as fp:
-            return Settings(yaml.load(fp))
-
 
 @click.command(
     "assemble",
@@ -125,7 +50,7 @@ def _load_settings_callback(ctx, param, value):
     "--directory",
     default=EXTRACTED_OUTPUT,
     show_default=True,
-    help="A path, relative to the current working directory, "
+    help="Absolute path to the directory "
     "containing extracted metadata for processing",
 )
 @click.option(
@@ -138,29 +63,22 @@ def _load_settings_callback(ctx, param, value):
     "--output",
     default=ASSEMBLED_OUTPUT,
     show_default=True,
-    help="A path, relative to the current working directory, "
+    help="Absolute path to the directory, "
     "where the assembled metadata should be written",
 )
-@click.option(
-    "--settings",
-    default="data/config/assembler.yaml",
-    show_default=True,
-    callback=_load_settings_callback,
-    help="YAML file with configuration for the assembler",
-)
 @common_options
-def assemble_cli(settings, directory, output, clean):
+def assemble_cli(directory, output, clean):
     if clean:
         shutil.rmtree(output, ignore_errors=True)
 
     entry_docs = []
-    for filename in all_filenames(directory):
-        entry_docs.extend(build_entries(filename, settings))
+    for filename in all_filenames(directory, '*.json'):
+        entry_docs.extend(build_entries(filename))
 
     current_doc_id = 0
     batch = []
     for entry in entry_docs:
-        if len(batch) >= settings.max_batch_size:
+        if len(batch) >= MAX_BATCH_SIZE:
             flush_batch(batch, current_doc_id, output)
             batch = []
             current_doc_id += 1
