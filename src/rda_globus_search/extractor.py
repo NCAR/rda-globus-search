@@ -196,9 +196,9 @@ def metadata2dict(dsid):
     return metadata
 
 def target_file(output_directory, dsid):
-    hashed_name = hashlib.sha256(dsid.encode("utf-8")).hexdigest()
+    target_name = "{}.search-metadata".format(dsid)
     os.makedirs(output_directory, exist_ok=True)
-    return os.path.join(output_directory, hashed_name) + ".json"
+    return os.path.join(output_directory, target_name) + ".json"
 
 def validate_dsid(ctx, param, dsid):
     """ Validate dsid from command line input """
