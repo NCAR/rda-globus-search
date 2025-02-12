@@ -9,6 +9,9 @@ from .database import get_dbconfigs, load_db
 
 APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:all"]
 
+# Output directories for extracted and assembled metadata
+EXTRACTED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
+ASSEMBLED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/assembled'
 
 def common_options(f):
     # any shared/common options for all commands
