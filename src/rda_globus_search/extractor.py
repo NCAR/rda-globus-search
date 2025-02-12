@@ -1,6 +1,7 @@
 import hashlib
 import os
 import shutil
+import re
 
 import click
 
@@ -177,7 +178,9 @@ def get_other_metadata(dsid):
 
     other_metadata = {}
     url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
-    other_metadata.update({'url': url})
+
+    other_metadata.update({'dataset ID': dsid,
+                           'url': url})
 
     return other_metadata
 
@@ -197,7 +200,13 @@ def target_file(output_directory, dsid):
     os.makedirs(output_directory, exist_ok=True)
     return os.path.join(output_directory, hashed_name) + ".json"
 
-
+def validate_dsid(ctx, param, dsid):
+    """ Validate dsid from command line input """
+    ms = re.match(r'^([a-z]{1})(\d{3})(\d{3})$', dsid)
+    if ms:
+        return dsid
+    else:
+        raise click.BadParameter("format must be 'dnnnnnn'")
 
 @click.command(
     "extract",
@@ -208,6 +217,7 @@ def target_file(output_directory, dsid):
     "--dsid",
     type=str,
     required=True,
+    callback=validate_dsid,
     help="Dataset ID (dnnnnnn) to extract metadata.",
 )
 @click.option(
