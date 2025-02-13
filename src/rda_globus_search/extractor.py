@@ -1,14 +1,13 @@
 import hashlib
 import os
 import shutil
+import re
 
 import click
 
-from .lib import common_options, prettyprint_json
+from .lib import EXTRACTED_OUTPUT, RDA_DOMAIN, common_options, prettyprint_json
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
-
-EXTRACTED_METADATA_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
 
 def get_search_metadata(dsid):
     """ Query and return search metadata """
@@ -174,26 +173,40 @@ def get_wagtail_metadata(dsid):
 
     return wagtail_metadata
 
+def get_other_metadata(dsid):
+    """ Returns metadata not stored in DB """
+
+    other_metadata = {}
+    url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
+
+    other_metadata.update({'dataset ID': dsid,
+                           'url': url})
+
+    return other_metadata
+
 def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
 
-    search_metadata = get_search_metadata(dsid)
-    dssdb_metadata = get_dssdb_metadata(dsid)
-    wagtail_metadata = get_wagtail_metadata(dsid)
-
     metadata = {}
-    metadata.update(search_metadata)
-    metadata.update(dssdb_metadata)
-    metadata.update(wagtail_metadata)
+    metadata.update(get_search_metadata(dsid))
+    metadata.update(get_dssdb_metadata(dsid))
+    metadata.update(get_wagtail_metadata(dsid))
+    metadata.update(get_other_metadata(dsid))
 
     return metadata
 
 def target_file(output_directory, dsid):
-    hashed_name = hashlib.sha256(dsid.encode("utf-8")).hexdigest()
+    target_name = "{}.search-metadata".format(dsid)
     os.makedirs(output_directory, exist_ok=True)
-    return os.path.join(output_directory, hashed_name) + ".json"
+    return os.path.join(output_directory, target_name) + ".json"
 
-
+def validate_dsid(ctx, param, dsid):
+    """ Validate dsid from command line input """
+    ms = re.match(r'^([a-z]{1})(\d{3})(\d{3})$', dsid)
+    if ms:
+        return dsid
+    else:
+        raise click.BadParameter("format must be 'dnnnnnn'")
 
 @click.command(
     "extract",
@@ -204,6 +217,7 @@ def target_file(output_directory, dsid):
     "--dsid",
     type=str,
     required=True,
+    callback=validate_dsid,
     help="Dataset ID (dnnnnnn) to extract metadata.",
 )
 @click.option(
@@ -214,10 +228,9 @@ def target_file(output_directory, dsid):
 )
 @click.option(
     "--output",
-    default=EXTRACTED_METADATA_OUTPUT,
+    default=EXTRACTED_OUTPUT,
     show_default=True,
-    help="A path, relative to the current working directory, "
-    "where the extracted metadata should be written",
+    help="Absolute path where the extracted metadata should be written",
 )
 @common_options
 def extract_cli(dsid, output, clean):
