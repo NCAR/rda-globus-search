@@ -69,7 +69,7 @@ def assemble_cli(directory, output, clean):
 
     entry_docs = []
     for filename in all_filenames(directory, '*.json'):
-        entry_docs.extend(build_entries(filename))
+        entry_docs.append(build_entries(filename))
 
     current_doc_id = 0
     batch = []
