@@ -1,11 +1,12 @@
 import yaml
 import globus_sdk
-from globus_sdk.tokenstorage import SimpleJSONFileAdapter
+from globus_sdk.tokenstorage import SQLiteAdapter
 
 AUTH_RESOURCE_SERVER = "auth.globus.org"
 AUTH_SCOPES = ["openid", "profile"]
 
 CLIENT_CONFIG = '/glade/u/home/rdadata/.globusconfig.yml'
+TOKEN_STORAGE = '/glade/u/home/rdadata/.globus_searchable_datasets.db'
 
 def get_client_credentials():
     """ Get Globus Search service client ID and secret """
@@ -24,7 +25,7 @@ def internal_auth_client():
 def token_storage_adapter():
     if not hasattr(token_storage_adapter, "_instance"):
         # namespace is equal to the current environment
-        token_storage_adapter._instance = SimpleJSONFileAdapter(TOKEN_FILE)
+        token_storage_adapter._instance = SQLiteAdapter(TOKEN_STORAGE, namespace="DEFAULT")
     return token_storage_adapter._instance
 
 def auth_client():
