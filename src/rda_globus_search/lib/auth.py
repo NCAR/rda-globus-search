@@ -2,6 +2,7 @@ import globus_sdk
 from globus_sdk.tokenstorage import SimpleJSONFileAdapter
 
 AUTH_RESOURCE_SERVER = "auth.globus.org"
+APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:all"]
 
 CLIENT_CONFIG = '/glade/u/home/rdadata/.globusconfig.yml'
 
