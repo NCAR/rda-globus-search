@@ -143,20 +143,6 @@ class SQLiteAdapter:
         self._connection.commit()
         return rowcount != 0
 
-    def iter_namespaces(
-        self, *
-    ) -> t.Iterator[str]:
-        """
-        Iterate over the namespaces which are in use in this storage adapter's database.
-        """
-        seen: set[str] = set()
-        for row in self._connection.execute(
-            "SELECT DISTINCT namespace FROM config_storage;"
-        ):
-            namespace = row[0]
-            if namespace not in seen:
-                yield namespace
-
 def config_storage_adapter():
     if not hasattr(config_storage_adapter, "_instance"):
         # namespace is equal to the current environment
