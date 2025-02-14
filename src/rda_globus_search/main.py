@@ -1,7 +1,7 @@
 import click
 
 # from . import assembler, extractor, manage_index, query, submitter, watcher
-from . import extractor, assembler
+from . import extractor, assembler, manage_index
 from .lib import common_options
 
 @click.group("dataset-search")
@@ -11,7 +11,7 @@ def cli():
 
 
 # index management
-#manage_index.add_commands(cli)
+manage_index.add_commands(cli)
 
 # cli workflow
 cli.add_command(extractor.extract_cli)
