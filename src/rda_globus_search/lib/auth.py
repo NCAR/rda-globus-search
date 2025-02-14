@@ -6,7 +6,7 @@ AUTH_RESOURCE_SERVER = "auth.globus.org"
 AUTH_SCOPES = ["openid", "profile"]
 
 CLIENT_CONFIG = '/glade/u/home/rdadata/globus/.globusconfig.yml'
-TOKEN_STORAGE = '/glade/u/home/rdadata/globus/.globus_searchable_datasets.db'
+TOKEN_STORAGE = '/glade/u/home/rdadata/globus/.globus_search.db'
 
 def get_client_credentials():
     """ Get Globus Search service client ID and secret """
