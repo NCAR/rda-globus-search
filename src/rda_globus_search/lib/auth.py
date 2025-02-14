@@ -1,5 +1,6 @@
 import globus_sdk
 from globus_sdk.tokenstorage import SimpleJSONFileAdapter
+from . import APP_SCOPES
 
 AUTH_RESOURCE_SERVER = "auth.globus.org"
 
