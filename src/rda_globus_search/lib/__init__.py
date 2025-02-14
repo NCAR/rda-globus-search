@@ -9,8 +9,11 @@ from .search import search_client
 from .database import get_dbconfigs, load_db, config_storage_adapter
 
 # Output directories for extracted and assembled metadata
-EXTRACTED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
-ASSEMBLED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/assembled'
+OUTPUT_BASE = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata'
+
+EXTRACTED_OUTPUT = os.path.join(OUTPUT_BASE, 'extracted')
+ASSEMBLED_OUTPUT = os.path.join(OUTPUT_BASE, 'assembled')
+TASK_SUBMIT_OUTPUT = os.path.join(OUTPUT_BASE, 'task_submit')
 
 RDA_DOMAIN = "https://rda.ucar.edu"
 
@@ -45,6 +48,7 @@ def prettyprint_json(obj, fp=None):
 __all__ = (
     "EXTRACTED_OUTPUT",
     "ASSEMBLED_OUTPUT",
+    "TASK_SUBMIT_OUTPUT",
     "RDA_DOMAIN",
     "common_options",
     "all_filenames",
