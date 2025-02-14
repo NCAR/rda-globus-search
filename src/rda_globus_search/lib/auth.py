@@ -27,5 +27,5 @@ def token_storage_adapter():
     return token_storage_adapter._instance
 
 def auth_client():
-    authorizer = globus_sdk.ClientCredentialsAuthorizer(internal_auth_client, APP_SCOPES)
+    authorizer = globus_sdk.ClientCredentialsAuthorizer(internal_auth_client(), APP_SCOPES)
     return globus_sdk.AuthClient(authorizer=authorizer, app_name="dataset-search")
