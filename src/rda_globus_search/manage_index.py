@@ -43,7 +43,7 @@ def create_index(name, description):
         click.echo(f"Index already exists, id='{index_id}'.")
         click.echo("Use the subcommand 'set-index' to set the index for 'submit' and 'query' commands.")
     else:
-        index = client.create_index(display_name=index_name, description=index_desc).data
+        index = client.create_index(display_name=name, description=description).data
         index_id = index["id"]
         adapter.store_config("index_info", {"index_id": index_id, 
                                             "display name": name,
