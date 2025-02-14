@@ -32,17 +32,9 @@ def create_index(name, description):
 
     userinfo = auth_client().oauth2_userinfo()
     username = userinfo["preferred_username"]
-    res = client.post(
-        "/beta/index",
-        {
-            "display_name": "Searchable Files Demo Index",
-            "description": "An index created for use with the Searchable Files Demo App. "
-            f"Created by {username}",
-        },
-    )
 
-    # Fetch all indices
-    indices = [si for si in search_client.get("/v1/index_list").data['index_list']
+    # Check if index already exists
+    indices = [si for si in client.get("/v1/index_list").data['index_list']
         if si['display_name'] == name
         and 'owner' in si['permissions']
         ]
@@ -51,7 +43,7 @@ def create_index(name, description):
         click.echo(f"Index already exists, id='{index_id}'.")
         click.echo("Use the subcommand 'set-index' to set the index for 'submit' and 'query' commands.")
     else:
-        index = search_client.create_index(display_name=index_name, description=index_desc).data
+        index = client.create_index(display_name=index_name, description=index_desc).data
         index_id = index["id"]
         adapter.store_config("index_info", {"index_id": index_id, 
                                             "display name": name,
