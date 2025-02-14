@@ -1,7 +1,7 @@
 import globus_sdk
 
 from .auth import internal_auth_client
-from .lib import APP_SCOPES
+from . import APP_SCOPES
 
 SEARCH_RESOURCE_SERVER = "search.api.globus.org"
 
