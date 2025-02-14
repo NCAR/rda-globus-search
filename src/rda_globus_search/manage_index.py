@@ -8,7 +8,6 @@ from .lib import (
     config_storage_adapter,
 )
 
-
 @click.command(
     "create-index",
     help="Create a search index for searchable RDA datasets."
@@ -70,7 +69,6 @@ def show_index():
 
     res = client.get(f"/v1/index/{index_id}")
     click.echo(prettyprint_json(res.data))
-
 
 @click.command(
     "set-index",
