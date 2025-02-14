@@ -2,7 +2,7 @@ import click
 
 # from . import assembler, extractor, manage_index, query, submitter, watcher
 from . import extractor, assembler
-
+from .lib import common_options
 
 @click.group("dataset-search")
 @common_options
