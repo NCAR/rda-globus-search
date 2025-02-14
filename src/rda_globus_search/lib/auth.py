@@ -1,3 +1,4 @@
+import yaml
 import globus_sdk
 from globus_sdk.tokenstorage import SimpleJSONFileAdapter
 
@@ -15,7 +16,7 @@ def get_client_credentials():
             print(e)
 
 def internal_auth_client():
-    client_config = get_client_credentials['search_client']
+    client_config = get_client_credentials()['search_client']
     client_id = client_config['client_id']
     client_secret = client_config['client_secret']
     return globus_sdk.ConfidentialAppAuthClient(client_id, client_secret, app_name="dataset-search")
