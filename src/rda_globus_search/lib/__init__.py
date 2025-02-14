@@ -4,11 +4,9 @@ from glob import glob
 
 import click
 
-from .auth import auth_client, internal_auth_client, token_storage_adapter
+from .auth import auth_client, internal_auth_client
 from .search import search_client
-from .database import get_dbconfigs, load_db
-
-APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:all"]
+from .database import get_dbconfigs, load_db, config_storage_adapter
 
 # Output directories for extracted and assembled metadata
 EXTRACTED_OUTPUT = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted'
@@ -45,14 +43,13 @@ def prettyprint_json(obj, fp=None):
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
 
 __all__ = (
-    "APP_SCOPES",
     "EXTRACTED_OUTPUT",
     "ASSEMBLED_OUTPUT",
     "RDA_DOMAIN",
     "common_options",
     "all_filenames",
     "prettyprint_json",
-    "token_storage_adapter",
+    "config_storage_adapter",
     "internal_auth_client",
     "auth_client",
     "search_client",
