@@ -3,7 +3,7 @@ import globus_sdk
 from globus_sdk.tokenstorage import SimpleJSONFileAdapter
 
 AUTH_RESOURCE_SERVER = "auth.globus.org"
-APP_SCOPES = ["openid", "profile", "urn:globus:auth:scope:search.api.globus.org:all"]
+AUTH_SCOPES = ["openid", "profile"]
 
 CLIENT_CONFIG = '/glade/u/home/rdadata/.globusconfig.yml'
 
@@ -28,5 +28,5 @@ def token_storage_adapter():
     return token_storage_adapter._instance
 
 def auth_client():
-    authorizer = globus_sdk.ClientCredentialsAuthorizer(internal_auth_client(), APP_SCOPES)
+    authorizer = globus_sdk.ClientCredentialsAuthorizer(internal_auth_client(), AUTH_SCOPES)
     return globus_sdk.AuthClient(authorizer=authorizer, app_name="dataset-search")
