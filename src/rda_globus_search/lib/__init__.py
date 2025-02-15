@@ -14,6 +14,9 @@ OUTPUT_BASE = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-
 EXTRACTED_OUTPUT = os.path.join(OUTPUT_BASE, 'extracted')
 ASSEMBLED_OUTPUT = os.path.join(OUTPUT_BASE, 'assembled')
 TASK_SUBMIT_OUTPUT = os.path.join(OUTPUT_BASE, 'task_submit')
+TASK_WATCH_OUTPUT = os.path.join(OUTPUT_BASE, 'task_watch')
+
+TASK_OUTPUT_FILE = 'ingest-tasks.txt'
 
 RDA_DOMAIN = "https://rda.ucar.edu"
 
@@ -49,6 +52,8 @@ __all__ = (
     "EXTRACTED_OUTPUT",
     "ASSEMBLED_OUTPUT",
     "TASK_SUBMIT_OUTPUT",
+    "TASK_WATCH_OUTPUT",
+    "TASK_OUTPUT_FILE",
     "RDA_DOMAIN",
     "common_options",
     "all_filenames",

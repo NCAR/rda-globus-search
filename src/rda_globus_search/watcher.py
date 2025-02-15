@@ -1,8 +1,15 @@
+import os
 import time
 
 import click
 
-from .lib import common_options, search_client
+from .lib import (
+    common_options, 
+    search_client,
+    TASK_SUBMIT_OUTPUT,
+    TASK_WATCH_OUTPUT,
+    TASK_OUTPUT_FILE,
+)
 
 
 def wait(client, task_id, max_wait):
@@ -27,16 +34,15 @@ def wait(client, task_id, max_wait):
 )
 @click.option(
     "--task-id-file",
-    default="output/task_submit/tasks.txt",
+    default=os.join(TASK_SUBMIT_OUTPUT, TASK_OUTPUT_FILE),
     show_default=True,
-    help="A path, relative to the current working directory, "
-    "to a file containing task IDs to watch",
+    help="Absolute path to the file containing task IDs to watch",
 )
 @click.option(
     "--output",
-    default="output/task_watch",
+    default=TASK_WATCH_OUTPUT,
     show_default=True,
-    help="A directory relative to the current working directory, "
+    help="Absolute path to the directory, "
     "where the task status information will be written",
 )
 @click.option(

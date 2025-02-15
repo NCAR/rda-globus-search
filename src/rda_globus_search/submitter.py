@@ -8,7 +8,9 @@ from .lib import (
     common_options, 
     search_client, 
     config_storage_adapter, 
-    TASK_SUBMIT_OUTPUT
+    ASSEMBLED_OUTPUT,
+    TASK_SUBMIT_OUTPUT,
+    TASK_OUTPUT_FILE,
 )
 
 def submit_doc(client, index_id, filename, task_list_file):
@@ -28,30 +30,31 @@ def submit_doc(client, index_id, filename, task_list_file):
 )
 @click.option(
     "--directory",
-    default="output/assembled",
+    default=ASSEMBLED_OUTPUT,
     show_default=True,
-    help="A path, relative to the current working directory, "
-    "containing ingest documents to submit",
+    help="Absolute path to the directory containing "
+    "assembled ingest documents to submit",
 )
 @click.option(
     "--output",
     default=TASK_SUBMIT_OUTPUT,
     show_default=True,
-    help="A directory relative to the current working directory, "
-    "where the resulting task IDs be written",
+    help="Abolute path to the directory "
+    "where the resulting task IDs will be written",
 )
 @click.option(
     "--index-id",
     default=None,
-    help="Override the index ID where the tasks should be submitted. "
-    "If omitted, the index created with `create-index` will be used.",
+    help="Override the search index ID where the tasks should be submitted. "
+    "If omitted, the index stored in the sqlite3 configuration database, or "
+    "the index created with `create-index` will be used.",
 )
 @common_options
 def submit_cli(directory, output, index_id):
     client = search_client()
 
     os.makedirs(output, exist_ok=True)
-    task_list_file = os.path.join(output, "tasks.txt")
+    task_list_file = os.path.join(output, TASK_OUTPUT_FILE)
     with open(task_list_file, "w"):  # empty the file (open in write mode)
         pass
 
