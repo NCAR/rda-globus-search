@@ -34,7 +34,7 @@ def wait(client, task_id, max_wait):
 )
 @click.option(
     "--task-id-file",
-    default=os.join(TASK_SUBMIT_OUTPUT, TASK_OUTPUT_FILE),
+    default=os.path.join(TASK_SUBMIT_OUTPUT, TASK_OUTPUT_FILE),
     show_default=True,
     help="Absolute path to the file containing task IDs to watch",
 )
