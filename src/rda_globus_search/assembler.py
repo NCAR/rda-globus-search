@@ -20,7 +20,7 @@ def build_entries(datafile):
 
     entry_data = {k: v for k, v in data.items()}
     subject = entry_data['url']
-    visibility = 'public'
+    visibility = ['public']
 
     return {
             "subject": subject,
