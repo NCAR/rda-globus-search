@@ -20,7 +20,7 @@ def build_entries(datafile):
 
     entry_data = {k: v for k, v in data.items()}
     subject = entry_data['url']
-    visibility = 'public'
+    visibility = ['public']
 
     return {
             "subject": subject,
@@ -47,20 +47,20 @@ def flush_batch(entry_batch, docid, output_directory):
     default=EXTRACTED_OUTPUT,
     show_default=True,
     help="Absolute path to the directory "
-    "containing extracted metadata for processing",
+    "containing extracted metadata for processing.",
 )
 @click.option(
     "--clean",
     default=False,
     is_flag=True,
-    help="Empty the output directory before writing any data there",
+    help="Empty the output directory before writing any data there.",
 )
 @click.option(
     "--output",
     default=ASSEMBLED_OUTPUT,
     show_default=True,
     help="Absolute path to the directory, "
-    "where the assembled metadata should be written",
+    "where the assembled metadata should be written.",
 )
 @common_options
 def assemble_cli(directory, output, clean):
