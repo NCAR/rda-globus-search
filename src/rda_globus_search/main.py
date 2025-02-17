@@ -1,7 +1,6 @@
 import click
 
-from . import extractor, assembler, submitter, watcher, manage_index
-#from . import query
+from . import extractor, assembler, submitter, watcher, manage_index, query
 from .lib import common_options
 
 @click.group("dataset-search")
@@ -19,4 +18,4 @@ cli.add_command(submitter.submit_cli)
 cli.add_command(watcher.watch_cli)
 
 # query results
-#cli.add_command(query.query_cli)
+cli.add_command(query.query_cli)
