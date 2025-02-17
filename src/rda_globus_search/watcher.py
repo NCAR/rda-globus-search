@@ -27,8 +27,8 @@ def wait(client, task_id, max_wait):
 
 @click.command(
     "watch",
-    help="Wait for Tasks to complete.\n"
-    "Wait for Tasks whose IDs are listed in the task ID file to complete, and "
+    help="Wait for Globus Search ingest tasks to complete.\n"
+    "Wait for Tasks whose IDs are listed in the ingest task ID file to complete, and "
     "print information about the number which succeed or fail. If a task takes too "
     "long, it is treated as a failure.",
 )
@@ -50,8 +50,8 @@ def wait(client, task_id, max_wait):
     default=10,
     show_default=True,
     type=int,
-    help="The maximum amount of time to wait for a task to complete before "
-    "assuming that it is failed",
+    help="The maximum amount of time (in seconds) to wait for a task to complete before "
+    "assuming that it is failed.",
 )
 @click.option(  # for easy testing of the progress bar, sleep between tasks
     "--delay", hidden=True, type=float

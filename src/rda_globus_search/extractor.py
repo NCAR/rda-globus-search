@@ -224,13 +224,13 @@ def validate_dsid(ctx, param, dsid):
     "--clean",
     default=False,
     is_flag=True,
-    help="Empty the output directory before writing any data there",
+    help="Empty the output directory before writing any data there.",
 )
 @click.option(
     "--output",
     default=EXTRACTED_OUTPUT,
     show_default=True,
-    help="Absolute path where the extracted metadata should be written",
+    help="Absolute path where the extracted metadata should be written.",
 )
 @common_options
 def extract_cli(dsid, output, clean):

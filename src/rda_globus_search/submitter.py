@@ -23,9 +23,9 @@ def submit_doc(client, index_id, filename, task_list_file):
 
 @click.command(
     "submit",
-    help="Submit Ingest documents as new Tasks.\n"
-    "Reading Ingest documents produced by the Assembler, submit them "
-    "each as a new Task and log their task IDs. "
+    help="Submit ingest documents as new Globus Search ingest tasks.\n"
+    "Read ingest documents produced by the Assembler, submit them "
+    "each as a new ingest task and log their ingest task IDs. "
     "These tasks can then be monitored with the `watch` command.",
 )
 @click.option(
@@ -45,7 +45,7 @@ def submit_doc(client, index_id, filename, task_list_file):
 @click.option(
     "--index-id",
     default=None,
-    help="Override the search index ID where the tasks should be submitted. "
+    help="Override the default search index ID where the tasks should be submitted. "
     "If omitted, the index stored in the sqlite3 configuration database, or "
     "the index created with `create-index` will be used.",
 )
