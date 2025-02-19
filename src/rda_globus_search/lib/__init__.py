@@ -45,8 +45,8 @@ def all_filenames(directory, pattern=None):
 
 def prettyprint_json(obj, fp=None):
     if fp:
-        return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
-    return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
+        return json.dump(obj.__dict__, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
+    return json.dumps(obj.__dict__, indent=2, separators=(",", ": "), ensure_ascii=False)
 
 __all__ = (
     "EXTRACTED_OUTPUT",
