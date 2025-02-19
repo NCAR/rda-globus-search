@@ -142,7 +142,7 @@ If you want to inspect the query which the `dataset-search` command
 is generating instead of submitting the query, you can use
 `--dump-query` to write the query to standard out, as in
 ```
-dataset-search query "foo" --types=tar --dump-query
+dataset-search query "NCEP" --variables=temperature --dump-query
 ```
 ## Resources
 
