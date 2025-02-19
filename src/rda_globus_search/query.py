@@ -25,19 +25,14 @@ from .lib import common_options, prettyprint_json, search_client, config_storage
     help="Perform the search using the advanced query syntax",
 )
 @click.option(
-    "--types",
-    help="Filter results to files matching ALL of the listed types (comma-delimited). "
-    "For example, '--types=text,non-executable'",
+    "--variables",
+    help="Filter results to datasets matching any of the listed variables (comma-delimited). "
+    "For example, '--variables=temperature,pressure'",
 )
 @click.option(
-    "--types-or",
-    help="Filter results to files matching ANY of the listed types (comma-delimited). "
-    "For example, '--types=text,binary'",
-)
-@click.option(
-    "--extensions",
-    help="Filter results to files with specific extensions. For example "
-    "'--extension=txt,png'",
+    "--keywords",
+    help="Filter results to datasets matching any of the listed GCMD keywords (comma-delimited). "
+    "For example, '--keywords=temperature,precipitation'",
 )
 @click.option(
     "--dump-query",
@@ -49,9 +44,8 @@ def query_cli(
     limit,
     offset,
     advanced,
-    types,
-    types_or,
-    extensions,
+    variables,
+    keywords,
     dump_query,
 ):
     adapter = config_storage_adapter()
@@ -64,12 +58,10 @@ def query_cli(
     query_obj = globus_sdk.SearchQuery(
         q=query_string, limit=limit, offset=offset, advanced=advanced
     )
-    if types:
-        query_obj.add_filter("tags", types.split(","))
-    if types_or:
-        query_obj.add_filter("tags", types_or.split(","), type="match_any")
-    if extensions:  # since files can only have one extension, "match_any"
-        query_obj.add_filter("extension", extensions.split(","), type="match_any")
+    if variables:
+        query_obj.add_filter("variables", variables.split(","), type="match_any")
+    if keywords:
+        query_obj.add_filter("GCMD keywords", keywords.split(","), type="match_any")
 
     if dump_query:
         click.echo(prettyprint_json(query_obj))
