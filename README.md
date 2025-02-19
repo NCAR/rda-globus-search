@@ -108,7 +108,7 @@ extract_cli(args, standalone_mode=False)
 ```
 Note that the above example specifies 
 [`standalone_mode=False`](https://click.palletsprojects.com/en/stable/api/#click.BaseCommand.main), 
-otherwisePython `click` will exit the interpreter or script after calling the
+otherwise Python `click` will exit the interpreter or script after calling the
 function.
 
 ### Querying Results
