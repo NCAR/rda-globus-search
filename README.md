@@ -114,7 +114,7 @@ function.
 ### Querying Results
 
 The Searchable Files demo app includes a query command which you can use to
-search your files. Search results will be output in the JSON format produced by
+search dataset metadata. Search results will be output in the JSON format produced by
 the Globus Search service.
 
 See
