@@ -121,20 +121,14 @@ See
 ```
 dataset-search query --help
 ```
-
 for more details.
 
-You can filter your search results. For example
+A simple text query will search across all metadata fields for matches.
+For example:
 ```
-dataset-search query "foo" --types-or=text,png
+dataset-search query "precipitation"
 ```
-
-will submit a query which matches `"foo"` and requires that the files matched
-have either the `txt` or `png` type.
-```
-dataset-search query "foo" --types=text,non-executable
-```
-will filter results to text files that are not executable.
+will submit a query which matches `"precipitation"`.
 
 #### Dumping the Query
 
