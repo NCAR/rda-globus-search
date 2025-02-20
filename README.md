@@ -115,7 +115,13 @@ function.
 
 The Searchable Files demo app includes a query command which you can use to
 search dataset metadata. Search results will be output in the JSON format produced by
-the Globus Search service.
+the Globus Search service.  This is a simple query service meant only to verify
+a few selected metadata parameters were ingested correctly, and should not be
+treated as a fully supported query service.
+
+For advanced queries, include the `--advanced` option flag and use advanced
+query syntax in the query string.  See [Query Syntax](https://docs.globus.org/api/search/query/#query_syntax)
+in the Globus Search documentation for more information.
 
 See
 ```
@@ -136,7 +142,7 @@ If you want to inspect the query which the `dataset-search` command
 is generating instead of submitting the query, you can use
 `--dump-query` to write the query to standard out, as in
 ```
-dataset-search query "foo" --types=tar --dump-query
+dataset-search query "NCEP" --variables=temperature --dump-query
 ```
 ## Resources
 
