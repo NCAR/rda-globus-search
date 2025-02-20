@@ -139,7 +139,7 @@ def get_dssdb_metadata(dsid):
     dssdb_metadata = {}
 
     doi = pgget('dsvrsn', 'doi', cond + " AND status='A'")
-    dssdb_metadata.update({'doi': doi})
+    dssdb_metadata.update({'doi': doi['doi']})
 
     dsperiod_query = "SELECT " \
         "MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
@@ -147,8 +147,8 @@ def get_dssdb_metadata(dsid):
         "FROM dsperiod " \
         "WHERE {}".format(cond)
     dsperiod = pgmget(None, None, dsperiod_query)
-    dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'],
-                           'temporal_range_end': dsperiod['date_end']})
+    dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'][0],
+                           'temporal_range_end': dsperiod['date_end'][0]})
 
     return dssdb_metadata
 
