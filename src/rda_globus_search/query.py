@@ -64,6 +64,6 @@ def query_cli(
         query_obj.add_filter("GCMD keywords", keywords.split(","), type="match_any")
 
     if dump_query:
-        click.echo(prettyprint_json(query_obj))
+        click.echo(prettyprint_json(dict(query_obj)))
     else:
         click.echo(prettyprint_json(client.post_search(index_id, query_obj).data))
