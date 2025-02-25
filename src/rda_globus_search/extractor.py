@@ -5,7 +5,13 @@ import re
 
 import click
 
-from .lib import EXTRACTED_OUTPUT, RDA_DOMAIN, common_options, prettyprint_json
+from .lib import (
+    EXTRACTED_OUTPUT, 
+    RDA_DOMAIN, 
+    common_options, 
+    prettyprint_json, 
+    strip_html_tags
+)
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 
@@ -18,7 +24,8 @@ def get_search_metadata(dsid):
 
     # Dataset title and summary
     myrec = pgget('datasets', 'title, summary', cond)
-    search_metadata.update({'title': myrec['title'], 'description': myrec['summary']})
+    description = strip_html_tags(myrec['summary'])
+    search_metadata.update({'title': myrec['title'], 'description': description})
 
     # Data type (grid, platform_observation, etc.)
     data_types = pgmget('data_types', 'DISTINCT(keyword) as data_type', cond)

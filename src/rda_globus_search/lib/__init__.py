@@ -1,6 +1,8 @@
 import json
 import os
 from glob import glob
+from io import StringIO
+from html.parser import HTMLParser
 
 import click
 
@@ -48,6 +50,32 @@ def prettyprint_json(obj, fp=None):
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
 
+class MLStripper(HTMLParser):
+    """ 
+    Class to strip HTML tags and characters from a string. 
+
+    Example usage:
+    s = MLStripper()
+    s.feed(html_string)
+    stripped_string = s.get_data()
+
+    """
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs= True
+        self.text = StringIO()
+    def handle_data(self, d):
+        self.text.write(d)
+    def get_data(self):
+        return self.text.getvalue()
+
+def strip_html_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
 __all__ = (
     "EXTRACTED_OUTPUT",
     "ASSEMBLED_OUTPUT",
@@ -59,6 +87,7 @@ __all__ = (
     "all_filenames",
     "prettyprint_json",
     "config_storage_adapter",
+    "strip_html_tags",
     "internal_auth_client",
     "auth_client",
     "search_client",
