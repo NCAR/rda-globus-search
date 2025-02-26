@@ -45,9 +45,9 @@ def create_index(name, description):
         index = client.create_index(display_name=name, description=description).data
         index_id = index["id"]
         adapter.store_config("index_info", {"index_id": index_id, 
-                                            "display name": name,
+                                            "display_name": name,
                                             "description": description,
-                                            "created by": username})
+                                            "created_by": username})
         click.echo(f"successfully created index, id='{index_id}'")
 
 @click.command(
