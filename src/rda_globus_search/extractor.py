@@ -5,7 +5,13 @@ import re
 
 import click
 
-from .lib import EXTRACTED_OUTPUT, RDA_DOMAIN, common_options, prettyprint_json
+from .lib import (
+    EXTRACTED_OUTPUT, 
+    RDA_DOMAIN, 
+    common_options, 
+    prettyprint_json, 
+    strip_html_tags
+)
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 
@@ -18,11 +24,12 @@ def get_search_metadata(dsid):
 
     # Dataset title and summary
     myrec = pgget('datasets', 'title, summary', cond)
-    search_metadata.update({'title': myrec['title'], 'description': myrec['summary']})
+    description = strip_html_tags(myrec['summary'])
+    search_metadata.update({'title': myrec['title'], 'description': description})
 
     # Data type (grid, platform_observation, etc.)
     data_types = pgmget('data_types', 'DISTINCT(keyword) as data_type', cond)
-    search_metadata.update({'data type': data_types['data_type']})
+    search_metadata.update({'data_type': data_types['data_type']})
 
     # GCMD variables
     keyword_query = "SELECT " \
@@ -30,14 +37,14 @@ def get_search_metadata(dsid):
         "AS keywords " \
         "FROM gcmd_variables WHERE dsid='{}'".format(dsid)
     gcmd_keywords = pgmget(None, None, keyword_query)
-    search_metadata.update({'GCMD keywords': gcmd_keywords['keywords']})
+    search_metadata.update({'gcmd_keywords': gcmd_keywords['keywords']})
 
     # Time resolutions
     time_resolutions = pgmget('time_resolutions', 'DISTINCT(keyword) as time_resolutions', cond)
     if not time_resolutions:
-        search_metadata.update({'time resolution': None})
+        search_metadata.update({'time_resolution': None})
     else:
-        search_metadata.update({'time resolution': time_resolutions['time_resolutions']})
+        search_metadata.update({'time_resolution': time_resolutions['time_resolutions']})
 
     # Platforms
     platform_query = "SELECT path " \
@@ -54,9 +61,9 @@ def get_search_metadata(dsid):
     # Grid resolutions (gridded datasets only)
     grid_resolutions = pgmget('grid_resolutions', 'keyword', cond)
     if not grid_resolutions:
-        search_metadata.update({'spatial resolution': None})
+        search_metadata.update({'spatial_resolution': None})
     else:
-        search_metadata.update({'spatial resolution': grid_resolutions['keyword']})
+        search_metadata.update({'spatial_resolution': grid_resolutions['keyword']})
     
     # ISO topic
     topic = pgget('topics', 'keyword', cond)
@@ -82,9 +89,9 @@ def get_search_metadata(dsid):
         "WHERE p.dsid = '{}'".format(dsid)
     supported_projects = pgmget(None, None, supported_projects_query)
     if not supported_projects:
-        search_metadata.update({'supports project': None})
+        search_metadata.update({'supports_project': None})
     else:
-        search_metadata.update({'supports project': supported_projects['path']})
+        search_metadata.update({'supports_project': supported_projects['path']})
 
     # Data formats
     formats = pgmget('formats', 'DISTINCT(keyword) as format', cond)
@@ -125,9 +132,9 @@ def get_search_metadata(dsid):
         "WHERE c.dsid = '{}'".format(dsid)
     contributors = pgmget(None, None, contributor_query)
     if not contributors:
-        search_metadata.update({'data contributors': None})
+        search_metadata.update({'data_contributors': None})
     else:
-        search_metadata.update({'data contributors': contributors['path']})
+        search_metadata.update({'data_contributors': contributors['path']})
 
     return search_metadata
 
@@ -139,7 +146,7 @@ def get_dssdb_metadata(dsid):
     dssdb_metadata = {}
 
     doi = pgget('dsvrsn', 'doi', cond + " AND status='A'")
-    dssdb_metadata.update({'doi': doi})
+    dssdb_metadata.update({'doi': doi['doi']})
 
     dsperiod_query = "SELECT " \
         "MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
@@ -147,8 +154,8 @@ def get_dssdb_metadata(dsid):
         "FROM dsperiod " \
         "WHERE {}".format(cond)
     dsperiod = pgmget(None, None, dsperiod_query)
-    dssdb_metadata.update({'temporal range start': dsperiod['date_start'],
-                           'temporal range end': dsperiod['date_end']})
+    dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'][0],
+                           'temporal_range_end': dsperiod['date_end'][0]})
 
     return dssdb_metadata
 
@@ -168,7 +175,7 @@ def get_wagtail_metadata(dsid):
     wagtail_metadata.update({
         'updates': updates,
         'variables': variables,
-        'total volume': total_volume
+        'total_volume': total_volume
     })
 
     return wagtail_metadata
@@ -179,7 +186,7 @@ def get_other_metadata(dsid):
     other_metadata = {}
     url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
 
-    other_metadata.update({'dataset ID': dsid,
+    other_metadata.update({'dataset_id': dsid,
                            'url': url})
 
     return other_metadata
