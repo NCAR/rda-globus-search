@@ -254,5 +254,6 @@ def extract_cli(dsid, output, clean):
         with open(target_file(output, dsid), "w") as fp:
             prettyprint_json(data, fp)
 
+    logger.info("metadata extraction complete for dsid {dsid}")
     click.echo("metadata extraction complete")
     click.echo(f"results visible in\n  {output}")
