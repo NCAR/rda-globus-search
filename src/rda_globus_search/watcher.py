@@ -11,6 +11,8 @@ from .lib import (
     TASK_OUTPUT_FILE,
 )
 
+import logging
+logger = logging.getLogger(__name__)
 
 def wait(client, task_id, max_wait):
     waited = 0

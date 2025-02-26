@@ -8,6 +8,9 @@ from .lib import (
     config_storage_adapter,
 )
 
+import logging
+logger = logging.getLogger(__name__)
+
 @click.command(
     "create-index",
     help="Create a search index for searchable RDA datasets."

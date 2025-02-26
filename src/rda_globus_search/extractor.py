@@ -15,6 +15,9 @@ from .lib import (
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 
+import logging
+logger = logging.getLogger(__name__)
+
 def get_search_metadata(dsid):
     """ Query and return search metadata """
 
@@ -251,5 +254,6 @@ def extract_cli(dsid, output, clean):
         with open(target_file(output, dsid), "w") as fp:
             prettyprint_json(data, fp)
 
+    logger.info("metadata extraction complete for dsid {}".format(dsid))
     click.echo("metadata extraction complete")
     click.echo(f"results visible in\n  {output}")

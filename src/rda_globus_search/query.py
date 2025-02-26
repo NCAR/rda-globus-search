@@ -3,6 +3,8 @@ import globus_sdk
 
 from .lib import common_options, prettyprint_json, search_client, config_storage_adapter
 
+import logging
+logger = logging.getLogger(__name__)
 
 @click.command(
     "query",
