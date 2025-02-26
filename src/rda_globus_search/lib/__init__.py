@@ -53,18 +53,12 @@ def prettyprint_json(obj, fp=None):
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
 
-def configure_log(**kwargs):
+def configure_log():
    """ Congigure logging """
    logfile = os.path.join(LOGPATH, 'dataset-search.log')
-
-   if 'loglevel' in kwargs:
-      loglevel = kwargs['loglevel']
-   else:
-      loglevel = 'info'
-
-   level = getattr(logging, loglevel.upper())
+   loglevel = 'INFO'
    format = '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
-   logging.basicConfig(filename=logfile, level=level, format=format)
+   logging.basicConfig(filename=logfile, level=loglevel, format=format)
 
    return
 
