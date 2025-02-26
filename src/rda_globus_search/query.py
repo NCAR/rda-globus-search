@@ -61,7 +61,7 @@ def query_cli(
     if variables:
         query_obj.add_filter("variables", variables.split(","), type="match_any")
     if keywords:
-        query_obj.add_filter("GCMD keywords", keywords.split(","), type="match_any")
+        query_obj.add_filter("gcmd_keywords", keywords.split(","), type="match_any")
 
     if dump_query:
         click.echo(prettyprint_json(dict(query_obj)))
