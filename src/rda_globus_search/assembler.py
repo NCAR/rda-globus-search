@@ -11,6 +11,9 @@ from .lib import (ASSEMBLED_OUTPUT,
                   prettyprint_json
 )
 
+import logging
+logger = logging.getLogger(__name__)
+
 MAX_BATCH_SIZE = 10
 
 def build_entries(datafile):

@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from glob import glob
 from io import StringIO
 from html.parser import HTMLParser
@@ -10,8 +11,11 @@ from .auth import auth_client, internal_auth_client
 from .search import search_client
 from .database import get_dbconfigs, load_db, config_storage_adapter
 
+RDA_BASE_PATH = '/glade/campaign/collections/rda'
+LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
+
 # Output directories for extracted and assembled metadata
-OUTPUT_BASE = '/glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata'
+OUTPUT_BASE = os.path.join(RDA_BASE_PATH, 'work/tcram/globus/search/dataset-metadata')
 
 EXTRACTED_OUTPUT = os.path.join(OUTPUT_BASE, 'extracted')
 ASSEMBLED_OUTPUT = os.path.join(OUTPUT_BASE, 'assembled')
@@ -19,7 +23,6 @@ TASK_SUBMIT_OUTPUT = os.path.join(OUTPUT_BASE, 'task_submit')
 TASK_WATCH_OUTPUT = os.path.join(OUTPUT_BASE, 'task_watch')
 
 TASK_OUTPUT_FILE = 'ingest-tasks.txt'
-
 RDA_DOMAIN = "https://rda.ucar.edu"
 
 def common_options(f):
@@ -49,6 +52,21 @@ def prettyprint_json(obj, fp=None):
     if fp:
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
     return json.dumps(obj, indent=2, separators=(",", ": "), ensure_ascii=False)
+
+def configure_log(**kwargs):
+   """ Congigure logging """
+   logfile = os.path.join(LOGPATH, 'dataset-search.log')
+
+   if 'loglevel' in kwargs:
+      loglevel = kwargs['loglevel']
+   else:
+      loglevel = 'info'
+
+   level = getattr(logging, loglevel.upper())
+   format = '%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(message)s'
+   logging.basicConfig(filename=logfile, level=level, format=format)
+
+   return
 
 class MLStripper(HTMLParser):
     """ 
@@ -86,6 +104,7 @@ __all__ = (
     "common_options",
     "all_filenames",
     "prettyprint_json",
+    "configure_log",
     "config_storage_adapter",
     "strip_html_tags",
     "internal_auth_client",

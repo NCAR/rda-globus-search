@@ -1,7 +1,12 @@
 import click
+import logging
+import logging.handlers
 
 from . import extractor, assembler, submitter, watcher, manage_index, query
-from .lib import common_options
+from .lib import common_options, configure_log
+
+logger = logging.getLogger(__name__)
+configure_log()
 
 @click.group("dataset-search")
 @common_options

@@ -15,6 +15,9 @@ from .lib import (
 from .lib.database import load_db
 from rda_python_common.PgDBI import pgget, pgmget
 
+import logging
+logger = logging.getLogger(__name__)
+
 def get_search_metadata(dsid):
     """ Query and return search metadata """
 

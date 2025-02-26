@@ -13,6 +13,9 @@ from .lib import (
     TASK_OUTPUT_FILE,
 )
 
+import logging
+logger = logging.getLogger(__name__)
+
 def submit_doc(client, index_id, filename, task_list_file):
     with open(filename) as fp:
         data = json.load(fp)
