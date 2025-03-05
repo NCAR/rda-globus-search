@@ -2,7 +2,6 @@ import os
 import click
 
 from .lib import (
-    auth_client,
     common_options,
     validate_dsid,
     search_client,
@@ -15,21 +14,6 @@ DELETE_TASK_OUTPUT = os.path.join(OUTPUT_BASE, "task_delete")
 
 import logging
 logger = logging.getLogger(__name__)
-
-def delete_doc(client, index_id, dsid, task_list_file):
-    subject = get_other_metadata(dsid)['url']
-
-    res = client.delete_subject(index_id, subject)
-    task_id = res["task_id"]
-
-    with open(task_list_file, "a") as fp:
-        fp.write(task_id + "\n")
-
-    logger.info(f"""\
-                delete subject task for dsid = {dsid} 
-                submitted as task ID {task_id}""")
-
-    return task_id
 
 @click.command(
     "delete-subject",
@@ -87,3 +71,6 @@ subject delete (task submission) for dsid = {dsid} complete
 task ID {task_id} written to
     {task_list_file}"""
     )
+
+def add_commands(group):
+    group.add_command(delete_subject)

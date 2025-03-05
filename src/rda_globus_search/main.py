@@ -2,7 +2,15 @@ import click
 import logging
 import logging.handlers
 
-from . import extractor, assembler, submitter, watcher, manage_index, query
+from . import (
+    extractor, 
+    assembler, 
+    submitter, 
+    watcher, 
+    manage_index, 
+    manage_subject,
+    query
+)
 from .lib import common_options, configure_log
 
 logger = logging.getLogger(__name__)
@@ -24,3 +32,6 @@ cli.add_command(watcher.watch_cli)
 
 # query results
 cli.add_command(query.query_cli)
+
+# subject management
+manage_subject.add_commands(cli)
