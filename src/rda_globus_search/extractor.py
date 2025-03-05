@@ -9,6 +9,7 @@ from .lib import (
     EXTRACTED_OUTPUT, 
     RDA_DOMAIN, 
     common_options, 
+    validate_dsid,
     prettyprint_json, 
     strip_html_tags
 )
@@ -209,14 +210,6 @@ def target_file(output_directory, dsid):
     target_name = "{}.search-metadata".format(dsid)
     os.makedirs(output_directory, exist_ok=True)
     return os.path.join(output_directory, target_name) + ".json"
-
-def validate_dsid(ctx, param, dsid):
-    """ Validate dsid from command line input """
-    ms = re.match(r'^([a-z]{1})(\d{3})(\d{3})$', dsid)
-    if ms:
-        return dsid
-    else:
-        raise click.BadParameter("format must be 'dnnnnnn'")
 
 @click.command(
     "extract",

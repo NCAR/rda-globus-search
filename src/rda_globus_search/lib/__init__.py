@@ -48,6 +48,14 @@ def all_filenames(directory, pattern=None):
             for f in filenames:
                 yield os.path.join(dirpath, f)
 
+def validate_dsid(ctx, param, dsid):
+    """ Validate dsid from command line input """
+    ms = re.match(r'^([a-z]{1})(\d{3})(\d{3})$', dsid)
+    if ms:
+        return dsid
+    else:
+        raise click.BadParameter("format must be 'dnnnnnn'")
+
 def prettyprint_json(obj, fp=None):
     if fp:
         return json.dump(obj, fp, indent=2, separators=(",", ": "), ensure_ascii=False)
@@ -97,6 +105,7 @@ __all__ = (
     "RDA_DOMAIN",
     "common_options",
     "all_filenames",
+    "validate_dsid",
     "prettyprint_json",
     "configure_log",
     "config_storage_adapter",
