@@ -9,11 +9,41 @@ from .lib import (
     OUTPUT_BASE,
 )
 from .extractor import get_other_metadata
+from globus_sdk import GlobusAPIError
 
 DELETE_TASK_OUTPUT = os.path.join(OUTPUT_BASE, "task_delete")
 
 import logging
 logger = logging.getLogger(__name__)
+
+def submit_delete_subject(dsid, index_id, task_list_file):
+    subject = get_other_metadata(dsid)['url']
+
+    client = search_client()
+
+    try:
+        res = client.delete_subject(index_id, subject)
+    except GlobusAPIError as e:
+        msg = ("Globus API Error when attempting to delete a search index subject:\n"
+            "HTTP status: {0}\n"
+            "Error code: {1}\n"
+            "Error message: {2}\n"
+            "Search index: {3}\n"
+            "dsid: {4}\n"
+            "subject: {5}".format(e.http_status, e.code, e.message, index_id, dsid, subject)
+        )
+        logger.error(msg)
+
+    task_id = res["task_id"]
+
+    with open(task_list_file, "a") as fp:
+        fp.write(task_id + "\n")
+
+    logger.info(f"""\
+                delete subject task for dsid = {dsid} 
+                submitted as task ID {task_id}""")
+
+    return task_id
 
 @click.command(
     "delete-subject",
@@ -35,9 +65,6 @@ logger = logging.getLogger(__name__)
 )
 @common_options
 def delete_subject(dsid, index_id):
-    adapter = config_storage_adapter()
-    client = search_client()
-
     os.makedirs(DELETE_TASK_OUTPUT, exist_ok=True)
     task_list_file = os.path.join(DELETE_TASK_OUTPUT, "delete-tasks.txt")
 
@@ -53,17 +80,7 @@ def delete_subject(dsid, index_id):
             )
         index_id = index_info["index_id"]
 
-    subject = get_other_metadata(dsid)['url']
-
-    res = client.delete_subject(index_id, subject)
-    task_id = res["task_id"]
-
-    with open(task_list_file, "a") as fp:
-        fp.write(task_id + "\n")
-
-    logger.info(f"""\
-                delete subject task for dsid = {dsid} 
-                submitted as task ID {task_id}""")
+    task_id = submit_delete_subject(dsid, index_id, task_list_file)
 
     click.echo(
         f"""\
