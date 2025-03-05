@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
     "--limit", 
     type=int, 
     help="Limit the number of results to return", 
-    default=5,
+    default=10,
     show_default=True,
 )
 @click.option("--offset", type=int, help="Starting offset for paging", default=0, show_default=True)
