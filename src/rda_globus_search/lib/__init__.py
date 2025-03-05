@@ -4,6 +4,7 @@ import logging
 from glob import glob
 from io import StringIO
 from html.parser import HTMLParser
+import re
 
 import click
 

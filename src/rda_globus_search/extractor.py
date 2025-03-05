@@ -1,7 +1,5 @@
-import hashlib
 import os
 import shutil
-import re
 
 import click
 
