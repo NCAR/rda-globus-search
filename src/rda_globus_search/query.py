@@ -18,9 +18,13 @@ logger = logging.getLogger(__name__)
 @common_options
 @click.argument("QUERY_STRING")
 @click.option(
-    "--limit", type=int, help="Limit the number of results to return", default=5
+    "--limit", 
+    type=int, 
+    help="Limit the number of results to return", 
+    default=5,
+    show_default=True,
 )
-@click.option("--offset", type=int, help="Starting offset for paging", default=0)
+@click.option("--offset", type=int, help="Starting offset for paging", default=0, show_default=True)
 @click.option(
     "--advanced",
     is_flag=True,
