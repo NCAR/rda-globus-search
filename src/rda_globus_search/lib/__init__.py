@@ -4,6 +4,7 @@ import logging
 from glob import glob
 from io import StringIO
 from html.parser import HTMLParser
+import re
 
 import click
 
@@ -47,6 +48,14 @@ def all_filenames(directory, pattern=None):
         for dirpath, _dirnames, filenames in os.walk(directory):
             for f in filenames:
                 yield os.path.join(dirpath, f)
+
+def validate_dsid(ctx, param, dsid):
+    """ Validate dsid from command line input """
+    ms = re.match(r'^([a-z]{1})(\d{3})(\d{3})$', dsid)
+    if ms:
+        return dsid
+    else:
+        raise click.BadParameter("format must be 'dnnnnnn'")
 
 def prettyprint_json(obj, fp=None):
     if fp:
@@ -97,6 +106,7 @@ __all__ = (
     "RDA_DOMAIN",
     "common_options",
     "all_filenames",
+    "validate_dsid",
     "prettyprint_json",
     "configure_log",
     "config_storage_adapter",
