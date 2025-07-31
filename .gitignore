@@ -1,0 +1,4 @@
+.vscode
+.pytest_cache
+src/rda_globus_search.egg-info
+

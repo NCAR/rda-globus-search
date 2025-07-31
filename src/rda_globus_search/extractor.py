@@ -24,6 +24,18 @@ def get_search_metadata(dsid):
     cond = "dsid='{}'".format(dsid)
     search_metadata = {}
 
+    # Dataset type ('P' or 'H', public or historical).  Other dataset types
+    # should be ignored and not ingested ('W', 'I', etc.).
+    dataset_type = pgget('datasets', 'type', cond)
+    if dataset_type['type'] not in ['P', 'H']:
+        logger.warning(f"Dataset type '{dataset_type['type']}' is not supported for dsid {dsid} (it must be 'P' or 'H').")
+        logger.warning("Skipping metadata extraction for this dataset.")
+        click.echo(f"Dataset type '{dataset_type['type']}' is not supported for dsid {dsid} (it must be 'P' or 'H').")
+        click.echo("Skipping metadata extraction for this dataset.")
+        raise click.Abort()
+    else:
+        search_metadata.update({'dataset_type': dataset_type['type']})
+
     # Dataset title and summary
     myrec = pgget('datasets', 'title, summary', cond)
     description = strip_html_tags(myrec['summary'])
