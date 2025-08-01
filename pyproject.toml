@@ -9,7 +9,7 @@ dataset-search = "rda_globus_search:cli"
 
 [project]
 name = "rda_globus_search"
-version = "1.0.57"
+version = "1.0.58"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
