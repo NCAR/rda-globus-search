@@ -273,4 +273,4 @@ def extract_cli(dsid, output, clean):
 
     logger.info(f"metadata extraction complete for dsid {dsid}")
     click.echo("metadata extraction complete")
-    click.echo(f"results visible in\n  {output}")
+    click.echo(f"results visible in\n  {target_file(output, dsid)}")
