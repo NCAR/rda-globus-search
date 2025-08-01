@@ -183,8 +183,15 @@ def get_wagtail_metadata(dsid):
     wagtail_rec = pgget('dataset_description_datasetdescriptionpage', 'update_freq, variables, volume', cond)
 
     updates = wagtail_rec['update_freq']
-    variables = wagtail_rec['variables']['gcmd']
-    total_volume = wagtail_rec['volume']['full']
+    if 'gcmd' in wagtail_rec['variables']:
+        variables = wagtail_rec['variables']['gcmd']
+    else:
+        variables = ''
+
+    if 'full' in wagtail_rec['volume']:
+        total_volume = wagtail_rec['volume']['full']
+    else:
+        total_volume = ''
 
     wagtail_metadata.update({
         'updates': updates,
