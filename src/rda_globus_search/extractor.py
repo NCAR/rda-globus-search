@@ -160,7 +160,10 @@ def get_dssdb_metadata(dsid):
     dssdb_metadata = {}
 
     doi = pgget('dsvrsn', 'doi', cond + " AND status='A'")
-    dssdb_metadata.update({'doi': doi['doi']})
+    if doi and 'doi' in doi:
+        dssdb_metadata.update({'doi': doi['doi']})
+    else:
+        dssdb_metadata.update({'doi': None})
 
     dsperiod_query = "SELECT " \
         "MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
