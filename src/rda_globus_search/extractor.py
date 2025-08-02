@@ -185,7 +185,7 @@ def get_dssdb_metadata(dsid):
         temporal_end = dsperiod['date_end'][0]
 
     # BCE (Before Common Era) datasets are not supported by the search index.
-    if dsperiod['time_zone'] == 'BCE':
+    if dsperiod['time_zone'][0] == 'BCE':
         dssdb_metadata.update({'temporal_range_start': None,
                                'temporal_range_end': None})
     else:
