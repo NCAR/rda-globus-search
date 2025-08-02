@@ -71,6 +71,28 @@ def configure_log():
 
    return
 
+def move_file_to_completed(output, filename):
+    """
+    Moves the file to a new subdirectory named 'completed'.
+    If the file already exists in 'completed', appends an incrementing number to its name.
+    Returns the new file path.
+    """
+    completed_dir = os.path.join(output, "completed")
+    os.makedirs(completed_dir, exist_ok=True)
+    base_name = os.path.basename(filename)
+    dest_path = os.path.join(completed_dir, base_name)
+
+    # Ensure unique filename in 'completed'
+    base, ext = os.path.splitext(dest_path)
+    counter = 0
+    unique_dest = dest_path
+    while os.path.exists(unique_dest):
+        unique_dest = f"{base}_{counter}{ext}"
+        counter += 1
+
+    os.rename(filename, unique_dest)
+    return unique_dest
+
 class MLStripper(HTMLParser):
     """ 
     Class to strip HTML tags and characters from a string. 
@@ -109,6 +131,7 @@ __all__ = (
     "validate_dsid",
     "prettyprint_json",
     "configure_log",
+    "move_file_to_completed",
     "config_storage_adapter",
     "strip_html_tags",
     "internal_auth_client",

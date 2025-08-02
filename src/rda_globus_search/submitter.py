@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 import click
 
@@ -8,6 +9,7 @@ from .lib import (
     common_options, 
     search_client, 
     config_storage_adapter, 
+    move_file_to_completed,
     ASSEMBLED_OUTPUT,
     TASK_SUBMIT_OUTPUT,
     TASK_OUTPUT_FILE,
@@ -58,7 +60,13 @@ def submit_cli(directory, output, index_id):
 
     os.makedirs(output, exist_ok=True)
     task_list_file = os.path.join(output, TASK_OUTPUT_FILE)
-    with open(task_list_file, "w"):  # empty the file (open in write mode)
+
+    # move any existing task list file to the 'completed' subdirectory
+    if os.path.exists(task_list_file):
+        moved_task_file = move_file_to_completed(output, task_list_file)
+        click.echo(f"Moved existing task list file to {moved_task_file}")
+
+    with open(task_list_file, "w"):  # create a new empty task list file
         pass
 
     if not index_id:
