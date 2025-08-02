@@ -1,5 +1,6 @@
 import os
 import shutil
+from time import time
 
 import click
 
@@ -167,11 +168,18 @@ def get_dssdb_metadata(dsid):
 
     dsperiod_query = f"SELECT " \
         f"MIN(CONCAT(date_start, ' ', time_start)) AS date_start, " \
-        f"MAX(CONCAT(date_end, ' ', time_end)) AS date_end " \
+        f"MAX(CONCAT(date_end, ' ', time_end)) AS date_end, " \
+        f"time_zone " \
         f"FROM dsperiod " \
-        f"WHERE {cond}"
+        f"WHERE {cond} GROUP BY time_zone"
     dsperiod = pgmget(None, None, dsperiod_query)
-    dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'][0],
+
+    # BCE (Before Common Era) datasets are not supported by the search index.
+    if dsperiod['time_zone'] == 'BCE':
+        dssdb_metadata.update({'temporal_range_start': None,
+                               'temporal_range_end': None})
+    else:
+        dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'][0],
                            'temporal_range_end': dsperiod['date_end'][0]})
 
     return dssdb_metadata
@@ -218,6 +226,14 @@ def get_other_metadata(dsid):
                            'url': url})
 
     return other_metadata
+
+def check_date(date_str):
+    """ Check if a date string is in the format YYYY-MM-DD HH:MM:SS """
+    try:
+        time.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+        return True
+    except ValueError:
+        return False
 
 def metadata2dict(dsid):
     """ Query metadata from the database and return in a comprehensive dict """
