@@ -85,7 +85,9 @@ def move_file_to_completed(output, filename):
     # Ensure unique filename in 'completed'
     base, ext = os.path.splitext(dest_path)
     counter = 0
-    unique_dest = dest_path
+    unique_dest = f"{base}_{counter}{ext}"
+    counter += 1
+    # Increment counter until a unique filename is found
     while os.path.exists(unique_dest):
         unique_dest = f"{base}_{counter}{ext}"
         counter += 1
