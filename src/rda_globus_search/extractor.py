@@ -174,13 +174,23 @@ def get_dssdb_metadata(dsid):
         f"WHERE {cond} GROUP BY time_zone"
     dsperiod = pgmget(None, None, dsperiod_query)
 
+    if dsperiod['date_start'][0].endswith("24:00:00"):
+        temporal_start = dsperiod['date_start'][0][:-9] + " 23:59:59"
+    else:
+        temporal_start = dsperiod['date_start'][0]
+
+    if dsperiod['date_end'][0].endswith("24:00:00"):
+        temporal_end = dsperiod['date_end'][0][:-9] + " 23:59:59"
+    else:
+        temporal_end = dsperiod['date_end'][0]
+
     # BCE (Before Common Era) datasets are not supported by the search index.
     if dsperiod['time_zone'] == 'BCE':
         dssdb_metadata.update({'temporal_range_start': None,
                                'temporal_range_end': None})
     else:
-        dssdb_metadata.update({'temporal_range_start': dsperiod['date_start'][0],
-                           'temporal_range_end': dsperiod['date_end'][0]})
+        dssdb_metadata.update({'temporal_range_start': temporal_start,
+                               'temporal_range_end': temporal_end})
 
     return dssdb_metadata
 
