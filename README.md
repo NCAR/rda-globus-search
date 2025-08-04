@@ -38,7 +38,9 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to
 install `rda_globus_search`.
 
 From within your Python virtual environment:
-- run `pip install git+https://github.com/NCAR/rda-globus-search`
+```
+pip install git+https://github.com/NCAR/rda-globus-search
+```
 
 After installation, the cli command `dataset-search` will be available in
 the /bin directory of your virtual environment.
