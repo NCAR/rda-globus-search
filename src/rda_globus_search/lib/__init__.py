@@ -24,7 +24,7 @@ TASK_SUBMIT_OUTPUT = os.path.join(OUTPUT_BASE, 'task_submit')
 TASK_WATCH_OUTPUT = os.path.join(OUTPUT_BASE, 'task_watch')
 
 TASK_OUTPUT_FILE = 'ingest-tasks.txt'
-RDA_DOMAIN = "https://rda.ucar.edu"
+RDA_DOMAIN = "https://gdex.ucar.edu"
 
 def common_options(f):
     # any shared/common options for all commands

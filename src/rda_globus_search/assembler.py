@@ -22,7 +22,7 @@ def build_entries(datafile):
         data = json.load(fp)
 
     entry_data = {k: v for k, v in data.items()}
-    subject = entry_data['url']
+    subject = entry_data['dataset_id']
     visibility = ['public']
 
     return {
