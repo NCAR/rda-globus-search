@@ -51,8 +51,17 @@ def get_search_metadata(dsid):
         f"CONCAT('EARTH SCIENCE > ', topic, ' > ', term, ' > ', keyword) " \
         f"AS keywords " \
         f"FROM gcmd_variables WHERE dsid='{dsid}'"
-    gcmd_keywords = pgmget(None, None, keyword_query)
-    search_metadata.update({'gcmd_keywords': gcmd_keywords['keywords']})
+    
+    gcmd_keywords = pgmget('gcmd_variables', 'topic,term,keyword', cond)
+    topics = list(set(gcmd_keywords['topic']))
+    terms = list(set(gcmd_keywords['term']))
+    keywords = list(set(gcmd_keywords['keyword']))
+
+    gcmd_strings = []
+    for i in range(len(topics)):
+        gcmd_strings.append(f"EARTH SCIENCE > {topics[i]} > {terms[i]} > {keywords[i]}")
+    search_metadata.update({'gcmd_keywords': gcmd_strings})
+    search_metadata.update({'gcmd_keywords_short': topics+terms})
 
     # Time resolutions
     time_resolutions = pgmget('time_resolutions', 'DISTINCT(keyword) as time_resolutions', cond)
