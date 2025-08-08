@@ -160,6 +160,10 @@ def get_search_metadata(dsid):
     else:
         search_metadata.update({'data_contributors': contributors['path']})
 
+    # Publication date
+    pub_date = pgget('datasets', 'pub_date', cond)
+    search_metadata.update({'publication_date': pub_date['pub_date'].strftime("%Y-%m-%d")})
+
     return search_metadata
 
 def get_dssdb_metadata(dsid):
@@ -240,9 +244,11 @@ def get_other_metadata(dsid):
 
     other_metadata = {}
     url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
+    type = 'dataset'
 
     other_metadata.update({'dataset_id': dsid,
-                           'url': url})
+                           'url': url,
+                           'type': type})
 
     return other_metadata
 
