@@ -52,12 +52,11 @@ def get_search_metadata(dsid):
     terms = gcmd_keywords['term']
     keywords = gcmd_keywords['keyword']
 
-    gcmd_strings = []
-    for i in range(len(topics)):
-        gcmd_strings.append(f"EARTH SCIENCE > {topics[i]} > {terms[i]} > {keywords[i]}")
-
-    search_metadata.update({'gcmd_keywords': gcmd_strings})
-    search_metadata.update({'gcmd_keywords_short': list(set(topics + terms))})
+    search_metadata.update({'gcmd_category': 'EARTH SCIENCE'})
+    search_metadata.update({'gcmd_topics': list(set(topics))})
+    search_metadata.update({'gcmd_terms': list(set(terms))})
+    search_metadata.update({'gcmd_variables': list(set(keywords))})
+    search_metadata.update({'gcmd_topics_and_terms': list(set(topics + terms))})
 
     # Time resolutions
     time_resolutions = pgmget('time_resolutions', 'DISTINCT(keyword) as time_resolutions', cond)
