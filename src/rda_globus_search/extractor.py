@@ -47,12 +47,16 @@ def get_search_metadata(dsid):
     search_metadata.update({'data_type': data_types['data_type']})
 
     # GCMD variables
-    keyword_query = f"SELECT " \
-        f"CONCAT('EARTH SCIENCE > ', topic, ' > ', term, ' > ', keyword) " \
-        f"AS keywords " \
-        f"FROM gcmd_variables WHERE dsid='{dsid}'"
-    gcmd_keywords = pgmget(None, None, keyword_query)
-    search_metadata.update({'gcmd_keywords': gcmd_keywords['keywords']})
+    gcmd_keywords = pgmget('gcmd_variables', 'topic,term,keyword', cond)
+    topics = gcmd_keywords['topic']
+    terms = gcmd_keywords['term']
+    keywords = gcmd_keywords['keyword']
+
+    search_metadata.update({'gcmd_category': 'EARTH SCIENCE'})
+    search_metadata.update({'gcmd_topics': sorted(list(set(topics)))})
+    search_metadata.update({'gcmd_terms': sorted(list(set(terms)))})
+    search_metadata.update({'gcmd_variables': sorted(list(set(keywords)))})
+    search_metadata.update({'gcmd_topics_and_terms': sorted(list(set(topics + terms)))})
 
     # Time resolutions
     time_resolutions = pgmget('time_resolutions', 'DISTINCT(keyword) as time_resolutions', cond)
@@ -151,6 +155,10 @@ def get_search_metadata(dsid):
     else:
         search_metadata.update({'data_contributors': contributors['path']})
 
+    # Publication date
+    pub_date = pgget('datasets', 'pub_date', cond)
+    search_metadata.update({'publication_date': pub_date['pub_date'].strftime("%Y-%m-%d")})
+
     return search_metadata
 
 def get_dssdb_metadata(dsid):
@@ -201,17 +209,12 @@ def get_wagtail_metadata(dsid):
     cond = f"dsid='{dsid}'"
     wagtail_metadata = {}
 
-    wagtail_rec = pgget('dataset_description_datasetdescriptionpage', 'update_freq, variables, volume', cond)
+    wagtail_rec = pgget('dataset_description_datasetdescriptionpage', 'update_freq, volume', cond)
 
     if 'update_freq' not in wagtail_rec or wagtail_rec['update_freq'] is None:
         updates = None
     else:
         updates = wagtail_rec['update_freq']
-
-    if 'variables' not in wagtail_rec or wagtail_rec['variables'] is None:
-        variables = None
-    else:
-        variables = wagtail_rec['variables']['gcmd'] if 'gcmd' in wagtail_rec['variables'] else None
 
     if 'volume' not in wagtail_rec or wagtail_rec['volume'] is None:
         total_volume = None
@@ -220,7 +223,6 @@ def get_wagtail_metadata(dsid):
 
     wagtail_metadata.update({
         'updates': updates,
-        'variables': variables,
         'total_volume': total_volume
     })
 
@@ -231,9 +233,11 @@ def get_other_metadata(dsid):
 
     other_metadata = {}
     url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
+    type = 'dataset'
 
     other_metadata.update({'dataset_id': dsid,
-                           'url': url})
+                           'url': url,
+                           'type': type})
 
     return other_metadata
 
