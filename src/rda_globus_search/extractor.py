@@ -131,18 +131,20 @@ def get_search_metadata(dsid):
     else:
         search_metadata.update({'instrument': instruments['path']})
     
-    # GCMD data locations
-    location_query = f"SELECT path " \
+    # GCMD locations
+    location_query = f"SELECT path, last_in_path " \
         f"FROM locations_new AS l " \
         f"LEFT JOIN gcmd_locations AS g " \
         f"ON g.uuid = l.keyword " \
         f"WHERE l.dsid = '{dsid}'"
     locations = pgmget(None, None, location_query)
     if not locations:
+        search_metadata.update({'gcmd_location_path': None})
         search_metadata.update({'location': None})
     else:
-        search_metadata.update({'location': locations['path']})
-    
+        search_metadata.update({'gcmd_location_path': locations['path']})
+        search_metadata.update({'location': locations['last_in_path']})
+
     # Data contributors
     contributor_query = f"SELECT path " \
         f"FROM contributors_new AS c " \
