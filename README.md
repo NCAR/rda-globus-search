@@ -10,7 +10,7 @@ This application is adapted from the [searchable-files-demo application](https:/
 
 ## Architecture
 
-The app is broken up into four main components:
+The app is broken up into five main components:
 
 - the **Extractor** (`src/rda_globus_search/extractor.py`)
 
@@ -31,6 +31,12 @@ The Submitter sends ingest documents to the Globus Search service.
 - the **Watcher** (`src/rda_globus_search/watcher.py`)
 
 The Watcher monitors ingest tasks in Globus Search and waits for completion or failure.
+
+- the **Ingester** (`src/rda_globus_search/ingester.py`)
+
+The Ingester runs the full extract, assemble, submit, and watch pipeline in sequence
+with a single command line call.  This is equivalent to running each subcommand 
+(`extract`, `assemble`, `submit`, and `watch`) individually.
 
 ## Installation
 
@@ -59,33 +65,37 @@ dataset-search watch --help
 The order of these commands matters, as each command's output is the input to
 the next command.
 
-The entire workflow can run in one line by simply running each command
+The entire workflow can run with the single command 
+```
+dataset-search ingest --dsid DATASET_ID
+```
+Alternatively, the entire workflow can be run in one line by simply running each command
 back-to-back:
 ```
 dataset-search extract && dataset-search assemble && dataset-search submit && dataset-search watch
 ```
-Note that the `extract` subcommand requires a dataset ID (format 'dnnnnnn') as 
+Note that the `extract` and `ingest` subcommands require a dataset ID (format 'dnnnnnn') as 
 input via the command line option `--dsid`.
 
 ### Example usage
 ```
-$ dataset-search extract --dsid d731000 --output /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted
+$ dataset-search extract --dsid d731000 --output /path/to/extracted/json/output
 
 metadata extraction complete
 results visible in
-  /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted
+  /path/to/extracted/json/output
 
 $ dataset-search assemble
 
 ingest document assembly complete
 results visible in
-  /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/assembled
+  /path/to/assembled/globus/search/output
 
 $ dataset-search submit
 
 ingest document submission (task submission) complete
 task IDs are visible in
-    /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/task_submit/ingest-tasks.txt
+    /path/to/task/submit/ingest-tasks.txt
 
 $ dataset-search watch
 
@@ -95,18 +105,19 @@ Tasks all completed successfully (1/1)
 
 ### Importing cli subcommands within a Python interpreter or script
 The cli subcommands can be imported into a Python interpreter or script in lieu
-of calling them from the command line.  These functions are `click.command` 
+of calling them from the command line.  These functions are 
+[`click.command`](https://click.palletsprojects.com/en/stable/api/#decorators) 
 objects that expect a `sys.argv` list as input.  
 
 For example, the subcommand `dataset-search extract` is defined as the
-function `rda_globus_search.extractor.extract_cli()`, and expects the required
+function `rda_globus_search.extractor.extract()`, and expects the required
 option `--dsid` and optional parameters `--output` and `--clean`.  The 
 `extract` subcommand can therefore be imported and called inside a Python
 interpreter or script as follows:
 ```
-from rda_globus_search.extractor import extract_cli
+from rda_globus_search.extractor import extract
 args = ["--dsid", "d731000", "--output", "/path/to/json/output"]
-extract_cli(args, standalone_mode=False)
+extract(args, standalone_mode=False)
 ```
 Note that the above example specifies 
 [`standalone_mode=False`](https://click.palletsprojects.com/en/stable/api/#click.BaseCommand.main), 

@@ -27,7 +27,6 @@ def submit_doc(client, index_id, filename, task_list_file):
 
 
 @click.command(
-    "submit",
     help="Submit ingest documents as new Globus Search ingest tasks.\n"
     "Read ingest documents produced by the Assembler, submit them "
     "each as a new ingest task and log their ingest task IDs. "
@@ -55,7 +54,7 @@ def submit_doc(client, index_id, filename, task_list_file):
     "the index created with `create-index` will be used.",
 )
 @common_options
-def submit_cli(directory, output, index_id):
+def submit(directory, output, index_id):
     client = search_client()
 
     os.makedirs(output, exist_ok=True)
