@@ -40,7 +40,6 @@ def flush_batch(entry_batch, docid, output_directory):
         )
 
 @click.command(
-    "assemble",
     help="Annotate data and prepare it for ingest into a Globus Search index.\n"
     "Given data from the Extractor, notate it and convert it into "
     "Ingest format.",
@@ -66,7 +65,7 @@ def flush_batch(entry_batch, docid, output_directory):
     "where the assembled metadata should be written.",
 )
 @common_options
-def assemble_cli(directory, output, clean):
+def assemble(directory, output, clean):
     if clean:
         shutil.rmtree(output, ignore_errors=True)
 

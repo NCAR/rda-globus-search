@@ -47,7 +47,6 @@ def wait(client, task_id, max_wait):
 
 
 @click.command(
-    "watch",
     help="Wait for Globus Search ingest tasks to complete.\n"
     "Wait for Tasks whose IDs are listed in the ingest task ID file to complete, and "
     "print information about the number which succeed or fail. If a task takes too "
@@ -78,7 +77,7 @@ def wait(client, task_id, max_wait):
     "--delay", hidden=True, type=float
 )
 @common_options
-def watch_cli(task_id_file, output, max_wait, delay):
+def watch(task_id_file, output, max_wait, delay):
     client = search_client()
 
     task_ids = set()

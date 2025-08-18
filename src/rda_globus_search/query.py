@@ -7,7 +7,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 @click.command(
-    "query",
     help="Perform a search query.\n"
     "This will automatically query the index created with create-index. "
     "This command supports various operations which are specific to the data "
@@ -45,7 +44,7 @@ logger = logging.getLogger(__name__)
     is_flag=True,
     help="Write the query structure to stdout instead of submitting it to the service",
 )
-def query_cli(
+def query(
     query_string,
     limit,
     offset,

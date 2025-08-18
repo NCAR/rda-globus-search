@@ -268,7 +268,6 @@ def target_file(output_directory, dsid):
     return os.path.join(output_directory, target_name) + ".json"
 
 @click.command(
-    "extract",
     help="Extract metadata from the database.\n"
     "This command creates dataset level metadata extracted from various metadata tables.",
 )
@@ -292,7 +291,7 @@ def target_file(output_directory, dsid):
     help="Absolute path where the extracted metadata should be written.",
 )
 @common_options
-def extract_cli(dsid, output, clean):
+def extract(dsid, output, clean):
     if clean:
         shutil.rmtree(output, ignore_errors=True)
 
