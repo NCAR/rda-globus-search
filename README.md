@@ -105,7 +105,8 @@ Tasks all completed successfully (1/1)
 
 ### Importing cli subcommands within a Python interpreter or script
 The cli subcommands can be imported into a Python interpreter or script in lieu
-of calling them from the command line.  These functions are `click.command` 
+of calling them from the command line.  These functions are 
+[`click.command`](https://click.palletsprojects.com/en/stable/api/#decorators) 
 objects that expect a `sys.argv` list as input.  
 
 For example, the subcommand `dataset-search extract` is defined as the
