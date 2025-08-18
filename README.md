@@ -79,23 +79,23 @@ input via the command line option `--dsid`.
 
 ### Example usage
 ```
-$ dataset-search extract --dsid d731000 --output /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted
+$ dataset-search extract --dsid d731000 --output /path/to/extracted/json/output
 
 metadata extraction complete
 results visible in
-  /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/extracted
+  /path/to/extracted/json/output
 
 $ dataset-search assemble
 
 ingest document assembly complete
 results visible in
-  /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/assembled
+  /path/to/assembled/globus/search/output
 
 $ dataset-search submit
 
 ingest document submission (task submission) complete
 task IDs are visible in
-    /glade/campaign/collections/rda/work/tcram/globus/search/dataset-metadata/task_submit/ingest-tasks.txt
+    /path/to/task/submit/ingest-tasks.txt
 
 $ dataset-search watch
 
