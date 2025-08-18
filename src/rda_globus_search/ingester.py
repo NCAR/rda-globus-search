@@ -11,10 +11,16 @@ logger = logging.getLogger(__name__)
     "--dsid",
     help="Dataset ID (dnnnnnn) to process."
 )
+@click.option(
+    "--clean",
+    default=False,
+    is_flag=True,
+    help="Empty the output directory before writing any data there.",
+)
 @click.pass_context
-def ingest(ctx, dsid):
+def ingest(ctx, dsid, clean):
     ctx = click.get_current_context()
-    ctx.invoke(extractor.extract, dsid=dsid)
-    ctx.invoke(assembler.assemble)
+    ctx.invoke(extractor.extract, dsid=dsid, clean=clean)
+    ctx.invoke(assembler.assemble, clean=clean)
     ctx.invoke(submitter.submit)
     ctx.invoke(watcher.watch)
