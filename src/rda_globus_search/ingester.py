@@ -1,5 +1,6 @@
 import click
 from . import extractor, assembler, submitter, watcher
+from .lib import common_options, validate_dsid
 
 import logging
 logger = logging.getLogger(__name__)
@@ -11,6 +12,7 @@ logger = logging.getLogger(__name__)
     "--dsid",
     help="Dataset ID (dnnnnnn) to process.",
     required=True,
+    callback=validate_dsid,
 )
 @click.option(
     "--clean",
@@ -18,6 +20,7 @@ logger = logging.getLogger(__name__)
     is_flag=True,
     help="Empty the output directory before writing any data there.",
 )
+@common_options
 @click.pass_context
 def ingest(ctx, dsid, clean):
     ctx = click.get_current_context()
