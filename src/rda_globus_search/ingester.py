@@ -1,6 +1,8 @@
 import click
-import logging
 from . import extractor, assembler, submitter, watcher
+
+import logging
+logger = logging.getLogger(__name__)
 
 @click.command(
     help="Run all workflow commands in sequence: extract, assemble, submit, watch.  This is equivalent to running each subcommand (extract, assemble, submit, watch) individually."
