@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 )
 @click.option(
     "--dsid",
-    help="Dataset ID (dnnnnnn) to process."
+    help="Dataset ID (dnnnnnn) to process.",
+    required=True,
 )
 @click.option(
     "--clean",
