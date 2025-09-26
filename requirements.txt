@@ -16,7 +16,7 @@ cryptography==44.0.2
     # via
     #   globus-sdk
     #   pyjwt
-globus-sdk==3.52.0
+globus-sdk<4
     # via rda_globus_search (pyproject.toml)
 idna==3.10
     # via requests
