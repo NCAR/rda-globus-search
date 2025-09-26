@@ -4,7 +4,7 @@ import globus_sdk
 AUTH_RESOURCE_SERVER = "auth.globus.org"
 AUTH_SCOPES = ["openid", "profile"]
 
-CLIENT_CONFIG = '/glade/u/home/rdadata/globus/.globusconfig.yml'
+CLIENT_CONFIG = '/glade/u/home/gdexdata/globus/.globusconfig.yml'
 
 def get_client_credentials():
     """ Get Globus Search service client ID and secret """

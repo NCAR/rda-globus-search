@@ -7,8 +7,8 @@ import typing as t
 
 from rda_python_common.PgDBI import default_scinfo
 
-DATABASE_CONFIG = '/glade/u/home/rdadata/.pgconfig.yml'
-SQLITE_STORAGE = '/glade/u/home/rdadata/globus/.globus_search.db'
+DATABASE_CONFIG = '/glade/u/home/gdexdata/.pgconfig.yml'
+SQLITE_STORAGE = '/glade/u/home/gdexdata/globus/.globus_search.db'
 
 def get_dbconfigs():
     """ Get DB login config for all databases """

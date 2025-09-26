@@ -12,11 +12,11 @@ from .auth import auth_client, internal_auth_client
 from .search import search_client
 from .database import get_dbconfigs, load_db, config_storage_adapter
 
-RDA_BASE_PATH = '/glade/campaign/collections/rda'
-LOGPATH = os.path.join(RDA_BASE_PATH, 'work/tcram/logs/globus')
+GDEX_BASE_PATH = '/lustre/desc1/scratch'
+LOGPATH = os.path.join(GDEX_BASE_PATH, 'tcram/logs/globus')
 
 # Output directories for extracted and assembled metadata
-OUTPUT_BASE = os.path.join(RDA_BASE_PATH, 'work/tcram/globus/search/dataset-metadata')
+OUTPUT_BASE = os.path.join(GDEX_BASE_PATH, 'tcram/globus/search/dataset-metadata')
 
 EXTRACTED_OUTPUT = os.path.join(OUTPUT_BASE, 'extracted')
 ASSEMBLED_OUTPUT = os.path.join(OUTPUT_BASE, 'assembled')
@@ -24,7 +24,7 @@ TASK_SUBMIT_OUTPUT = os.path.join(OUTPUT_BASE, 'task_submit')
 TASK_WATCH_OUTPUT = os.path.join(OUTPUT_BASE, 'task_watch')
 
 TASK_OUTPUT_FILE = 'ingest-tasks.txt'
-RDA_DOMAIN = "https://gdex.ucar.edu"
+GDEX_DOMAIN = "https://gdex.ucar.edu"
 
 def common_options(f):
     # any shared/common options for all commands
@@ -127,7 +127,7 @@ __all__ = (
     "TASK_SUBMIT_OUTPUT",
     "TASK_WATCH_OUTPUT",
     "TASK_OUTPUT_FILE",
-    "RDA_DOMAIN",
+    "GDEX_DOMAIN",
     "common_options",
     "all_filenames",
     "validate_dsid",
