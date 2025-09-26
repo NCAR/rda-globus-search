@@ -6,7 +6,7 @@ import click
 
 from .lib import (
     EXTRACTED_OUTPUT, 
-    RDA_DOMAIN, 
+    GDEX_DOMAIN, 
     common_options, 
     validate_dsid,
     prettyprint_json, 
@@ -234,7 +234,7 @@ def get_other_metadata(dsid):
     """ Returns metadata not stored in DB """
 
     other_metadata = {}
-    url = os.path.join(RDA_DOMAIN, 'datasets', dsid)
+    url = os.path.join(GDEX_DOMAIN, 'datasets', dsid)
     type = 'dataset'
 
     other_metadata.update({'dataset_id': dsid,
