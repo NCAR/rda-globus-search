@@ -184,6 +184,12 @@ def get_dssdb_metadata(dsid):
         f"WHERE {cond} GROUP BY time_zone"
     dsperiod = pgmget(None, None, dsperiod_query)
 
+    if not dsperiod or 'date_start' not in dsperiod or 'date_end' not in dsperiod:
+        dssdb_metadata.update({'temporal_range_start': None,
+                               'temporal_range_end': None})
+        return dssdb_metadata
+    
+    # Adjust 24:00:00 to 23:59:59 for search index compatibility
     if dsperiod['date_start'][0].endswith("24:00:00"):
         temporal_start = dsperiod['date_start'][0][:-9] + " 23:59:59"
     else:
