@@ -161,6 +161,13 @@ def get_search_metadata(dsid):
     pub_date = pgget('datasets', 'pub_date', cond)
     search_metadata.update({'publication_date': pub_date['pub_date'].strftime("%Y-%m-%d")})
 
+    # Tags
+    ai_tag = pgget('datasets', 'ai_ready', cond)
+    tags = []
+    if ai_tag and ai_tag['ai_ready']=='Y':
+        tags.append('AI Ready')
+    search_metadata.update({'tags': tags})
+
     return search_metadata
 
 def get_dssdb_metadata(dsid):
@@ -248,7 +255,7 @@ def get_other_metadata(dsid):
                            'type': type})
 
     return other_metadata
-
+    
 def check_date(date_str):
     """ Check if a date string is in the format YYYY-MM-DD HH:MM:SS """
     try:
