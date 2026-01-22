@@ -13,7 +13,7 @@ version = "1.1.2"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
 ]
-description = "Python package to extract, assemble, and ingest NSF NCAR RDA dataset metadata into a Globus Search index"
+description = "Python package to extract, assemble, and ingest NSF NCAR GDEX dataset metadata into a Globus Search index"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
