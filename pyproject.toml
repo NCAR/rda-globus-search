@@ -5,10 +5,10 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-dataset-search = "rda_globus_search:cli"
+dataset-search = "gdex_globus_search:cli"
 
 [project]
-name = "rda_globus_search"
+name = "gdex_globus_search"
 version = "1.1.2"
 authors = [
   { name="Thomas Cram", email="tcram@ucar.edu" },
@@ -30,4 +30,4 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/NCAR/rda-globus-search"
+"Homepage" = "https://github.com/NCAR/gdex-globus-search"
