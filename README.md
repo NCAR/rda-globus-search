@@ -1,8 +1,8 @@
 # Dataset Search
 
 This application is a command-line tool that builds an index of metadata to
-enable search and discovery of datasets archived in the NSF NCAR Research 
-Data Archive (NSF NCAR RDA).  The metadata is extracted from the RDA database,
+enable search and discovery of datasets archived in the NSF NCAR Geoscience
+Data Exchange (GDEX).  The metadata is extracted from the GDEX database,
 then assembled and ingested into a Globus Search index, which can then be
 used in the web app for dataset search and discovery.
 
@@ -12,27 +12,27 @@ This application is adapted from the [searchable-files-demo application](https:/
 
 The app is broken up into five main components:
 
-- the **Extractor** (`src/rda_globus_search/extractor.py`)
+- the **Extractor** (`src/gdex_globus_search/extractor.py`)
 
 Extracts metadata from the database, and formats that data into JSON
 files.
 
-- the **Assembler** (`src/rda_globus_search/assembler.py`)
+- the **Assembler** (`src/gdex_globus_search/assembler.py`)
 
 Combines the output of the Extractor to produce ingest documents for Globus 
 Search. An ingest document is data formatted for submission to Globus Search, 
 containing searchable data and visibility information for who is allowed to 
 search on and view different parts of the data.
 
-- the **Submitter** (`src/rda_globus_search/submit.py`)
+- the **Submitter** (`src/gdex_globus_search/submit.py`)
 
 The Submitter sends ingest documents to the Globus Search service.
 
-- the **Watcher** (`src/rda_globus_search/watcher.py`)
+- the **Watcher** (`src/gdex_globus_search/watcher.py`)
 
 The Watcher monitors ingest tasks in Globus Search and waits for completion or failure.
 
-- the **Ingester** (`src/rda_globus_search/ingester.py`)
+- the **Ingester** (`src/gdex_globus_search/ingester.py`)
 
 The Ingester runs the full extract, assemble, submit, and watch pipeline in sequence
 with a single command line call.  This is equivalent to running each subcommand 
@@ -41,11 +41,11 @@ with a single command line call.  This is equivalent to running each subcommand
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to 
-install `rda_globus_search`.
+install `gdex_globus_search`.
 
 From within your Python virtual environment:
 ```
-pip install git+https://github.com/NCAR/rda-globus-search
+pip install git+https://github.com/NCAR/gdex-globus-search
 ```
 
 After installation, the cli command `dataset-search` will be available in
@@ -110,12 +110,12 @@ of calling them from the command line.  These functions are
 objects that expect a `sys.argv` list as input.  
 
 For example, the subcommand `dataset-search extract` is defined as the
-function `rda_globus_search.extractor.extract()`, and expects the required
+function `gdex_globus_search.extractor.extract()`, and expects the required
 option `--dsid` and optional parameters `--output` and `--clean`.  The 
 `extract` subcommand can therefore be imported and called inside a Python
 interpreter or script as follows:
 ```
-from rda_globus_search.extractor import extract
+from gdex_globus_search.extractor import extract
 args = ["--dsid", "d731000", "--output", "/path/to/json/output"]
 extract(args, standalone_mode=False)
 ```
